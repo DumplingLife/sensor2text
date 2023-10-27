@@ -1,7 +1,7 @@
 import torch
-from video_llama.models.video_llama import VideoLLAMA
+from video_llama.models.video_stuff import VideoSide
 
-model = VideoLLAMA()
+model = VideoSide()
 
 batch_size = 32
 num_channels = 64
