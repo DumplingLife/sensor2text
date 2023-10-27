@@ -18,10 +18,6 @@ from video_llama.models.ImageBind.models.imagebind_model import ImageBindModel,M
 from video_llama.models.ImageBind.models import imagebind_model
 # from flamingo_pytorch import PerceiverResampler
 class VideoSide(Blip2Base):
-    """
-    BLIP2 GPT-LLAMA model.
-    """
-
     PRETRAINED_MODEL_CONFIG_DICT = {
         "pretrain_vicuna": "configs/models/video_llama.yaml",
         "pretrain_llama_v2": "configs/models/video_llama.yaml",
@@ -139,7 +135,60 @@ class VideoSide(Blip2Base):
 
         logging.info('Loading llama_proj Done')
 
-        #  self.audio_hidden_size
+
+        self.max_txt_len = max_txt_len
+        self.end_sym = end_sym
+
+        if prompt_path:
+            with open(prompt_path, 'r') as f:
+                raw_prompts = f.read().splitlines()
+            filted_prompts = [raw_prompt for raw_prompt in raw_prompts if "<ImageHere>" in raw_prompt]
+            self.prompt_list = [prompt_template.format(p) for p in filted_prompts]
+            print('Load {} training prompts'.format(len(self.prompt_list)))
+            print('Prompt Example \n{}'.format(random.choice(self.prompt_list)))
+        else:
+            self.prompt_list = []
+
+        self.video_frame_position_embedding = nn.Embedding(max_frame_pos, self.Qformer.config.hidden_size)
+
+        self.num_video_query_token = num_video_query_token
+        self.video_Qformer,self.video_query_tokens = self.init_video_Qformer(num_query_token = num_video_query_token,\
+            vision_width=self.Qformer.config.hidden_size, num_hidden_layers =2)
+
+        self.video_Qformer.cls = None
+        self.video_Qformer.bert.embeddings.word_embeddings = None
+        self.video_Qformer.bert.embeddings.position_embeddings = None
+        for layer in self.video_Qformer.bert.encoder.layer:
+            layer.output = None
+            layer.intermediate = None
+
+
+        if frozen_video_Qformer:
+            #  todo frozen  llama_proj
+            for name, param in self.video_Qformer.named_parameters():
+                param.requires_grad = False
+            for name, param in self.video_frame_position_embedding.named_parameters():
+                param.requires_grad = False
+            self.video_query_tokens.requires_grad = False
+            
+            logging.info('video_Qformer is frozen')
+        else:
+            for name, param in self.video_Qformer.named_parameters():
+                param.requires_grad = True
+            for name, param in self.video_frame_position_embedding.named_parameters():
+                param.requires_grad = True
+            self.video_query_tokens.requires_grad = True
+            logging.info('video_Qformer is not frozen')
+
+        if frozen_video_Qformer and (not frozen_audio_Qformer):
+            self.train_flag = 1 # 只训练audio_Qformer
+        elif not(frozen_video_Qformer) and frozen_audio_Qformer:
+            self.train_flag = 0 # 训练video_Qformer
+        elif not(frozen_video_Qformer) and not(frozen_audio_Qformer):
+            self.train_flag = 2 # video_Qformer and AL trained
+        else:
+            self.train_flag = 3
+
     def vit_to_cpu(self):
         self.ln_vision.to("cpu")
         self.ln_vision.float()
