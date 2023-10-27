@@ -17,7 +17,6 @@ from video_llama.models.Qformer import BertConfig, BertLMHeadModel
 from video_llama.models.ImageBind.models.imagebind_model import ImageBindModel,ModalityType
 from video_llama.models.ImageBind.models import imagebind_model
 # from flamingo_pytorch import PerceiverResampler
-@registry.register_model("video_llama")
 class VideoSide(Blip2Base):
     """
     BLIP2 GPT-LLAMA model.
