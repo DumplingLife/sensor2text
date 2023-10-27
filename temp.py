@@ -1,5 +1,5 @@
 import torch
-from video_llama.models.video_stuff import VideoSide
+from video_stuff import VideoSide
 
 model = VideoSide()
 
