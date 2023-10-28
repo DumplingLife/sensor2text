@@ -116,7 +116,8 @@ class VideoSide(Blip2Base):
         logging.info('Loading LLAMA proj')
         self.llama_proj = nn.Linear(
             # self.Qformer.config.hidden_size, self.llama_model.config.hidden_size
-            self.Qformer.config.hidden_size, 256
+            # self.Qformer.config.hidden_size, 256 # worked
+            self.Qformer.config.hidden_size, 128
         )
         if llama_proj_model:
             print("load llama proj weight: {}".format(llama_proj_model))
