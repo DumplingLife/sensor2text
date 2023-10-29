@@ -16,7 +16,7 @@ model:
   # llama_model: "ckpt/vicuna-13b/" or "ckpt/vicuna-7b/" or "ckpt/llama-2-7b-chat-hf"  or "ckpt/llama-2-13b-chat-hf"
   llama_model: "../Video-LLaMA-2-7B-Finetuned/llama-2-7b-chat-hf"
   # imagebind_ckpt_path: "ckpt/imagebind_path/"
-  imagebind_ckpt_path: "../Video-LLaMA-2-7B-Finetuned/imagebind_huge.pth"
+  imagebind_ckpt_path: "../Video-LLaMA-2-7B-Finetuned"
   # ckpt: 'path/pretrained_visual_branch_ckpt'   # you can use our pretrained ckpt from https://huggingface.co/DAMO-NLP-SG/Video-LLaMA-2-13B-Pretrained/
   ckpt: '../Video-LLaMA-2-7B-Finetuned/VL_LLaMA_2_7B_Finetuned.pth'
   # ckpt_2:  'path/pretrained_audio_branch_ckpt'
