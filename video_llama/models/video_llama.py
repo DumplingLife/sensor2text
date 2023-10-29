@@ -6,6 +6,7 @@ from torch.cuda.amp import autocast as autocast
 import torch.nn as nn
 
 import numpy as np
+from datetime import datetime
 
 from video_llama.common.registry import registry
 from video_llama.models.blip2 import Blip2Base, disabled_train
@@ -323,9 +324,10 @@ class VideoLLAMA(Blip2Base):
             inputs_llama = self.llama_proj(video_hidden)
             atts_llama = torch.ones(inputs_llama.size()[:-1], dtype=torch.long).to(image_embeds.device)
 
-        # Write output to file
-        np.save('inputs_llama.npy', inputs_llama.cpu().numpy())
-        np.save('atts_llama.npy', atts_llama.cpu().numpy())
+        # my stuff: log embeddings
+        timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+        np.save(f'inputs_llama_{timestamp}.npy', inputs_llama.cpu().numpy())
+        np.save(f'atts_llama_{timestamp}.npy', atts_llama.cpu().numpy())
         
         # Log message
         print('writing video output to file')
