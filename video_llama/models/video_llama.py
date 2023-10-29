@@ -328,8 +328,6 @@ class VideoLLAMA(Blip2Base):
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
         np.save(f'inputs_llama_{timestamp}.npy', inputs_llama.detach().cpu().numpy())
         np.save(f'atts_llama_{timestamp}.npy', atts_llama.detach().cpu().numpy())
-        
-        # Log message
         print('writing video output to file')
 
         return inputs_llama, atts_llama
@@ -379,7 +377,9 @@ class VideoLLAMA(Blip2Base):
 
             inputs_llama = self.audio_llama_proj(audio_hidden)
             atts_llama = torch.ones(inputs_llama.size()[:-1], dtype=torch.long).to(device)
-    
+
+        print("audio inputs_llama shape", inputs_llama.size())
+
         return inputs_llama, atts_llama
 
     def encode_videoQformer_audiovideo(self, image, audio):
