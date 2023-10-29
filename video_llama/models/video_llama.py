@@ -326,8 +326,8 @@ class VideoLLAMA(Blip2Base):
 
         # my stuff: log embeddings
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
-        np.save(f'inputs_llama_{timestamp}.npy', inputs_llama.cpu().numpy())
-        np.save(f'atts_llama_{timestamp}.npy', atts_llama.cpu().numpy())
+        np.save(f'inputs_llama_{timestamp}.npy', inputs_llama.detach().cpu().numpy())
+        np.save(f'atts_llama_{timestamp}.npy', atts_llama.detach().cpu().numpy())
         
         # Log message
         print('writing video output to file')
