@@ -11,6 +11,13 @@ def parse_args():
     parser.add_argument("--cfg-path", default='eval_configs/video_llama_eval_withaudio.yaml', help="path to configuration file.")
     parser.add_argument("--gpu-id", type=int, default=0, help="specify the gpu to load the model.")
     parser.add_argument("--model-type", type=str, default='vicuna', help="The type of LLM")
+    parser.add_argument(
+        "--options",
+        nargs="+",
+        help="override some settings in the used config, the key-value pair "
+        "in xxx=yyy format will be merged into config file (deprecate), "
+        "change to --cfg-options instead.",
+    )
     parser.add_argument("--video-folder", type=str, required=True, help="path to folder containing .avi videos")
     args = parser.parse_args()
     return args
