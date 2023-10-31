@@ -7,6 +7,7 @@ import torch.nn as nn
 
 import numpy as np
 from datetime import datetime
+from video_name import video_name
 
 from video_llama.common.registry import registry
 from video_llama.models.blip2 import Blip2Base, disabled_train
@@ -325,9 +326,9 @@ class VideoLLAMA(Blip2Base):
             atts_llama = torch.ones(inputs_llama.size()[:-1], dtype=torch.long).to(image_embeds.device)
 
         # my stuff: log embeddings
-        timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
-        np.save(f'inputs_llama_{timestamp}.npy', inputs_llama.detach().cpu().numpy())
-        np.save(f'atts_llama_{timestamp}.npy', atts_llama.detach().cpu().numpy())
+        save_path = "actionsense_data/videos_processed/" + video_name.name[:-4]
+        np.save(f'{save_path}/inputs_llama.npy', inputs_llama.detach().cpu().numpy())
+        np.save(f'{save_path}/atts_llama.npy', atts_llama.detach().cpu().numpy())
         print('writing video output to file')
 
         return inputs_llama, atts_llama
