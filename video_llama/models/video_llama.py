@@ -327,7 +327,7 @@ class VideoLLAMA(Blip2Base):
             atts_llama = torch.ones(inputs_llama.size()[:-1], dtype=torch.long).to(image_embeds.device)
 
         # my stuff: log embeddings
-        save_path = "actionsense_data/videos_processed/" + video_name.name[:-4]
+        save_path = "actionsense_data/outputs/" + video_name.name[:-4]
         os.mkdir(save_path)
         np.save(f'{save_path}/inputs_llama.npy', inputs_llama.detach().cpu().numpy())
         np.save(f'{save_path}/atts_llama.npy', atts_llama.detach().cpu().numpy())
