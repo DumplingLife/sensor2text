@@ -26,11 +26,12 @@ def parse_args():
 # ========================================
 #             Model Initialization
 # ========================================
-"""
+
 print('Initializing Chat')
 args = parse_args()
 cfg = Config(args)
 
+"""
 model_config = cfg.model_cfg
 model_config.device_8bit = args.gpu_id
 model_cls = registry.get_model_class(model_config.arch)
