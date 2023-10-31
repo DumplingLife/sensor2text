@@ -26,7 +26,7 @@ def parse_args():
 # ========================================
 #             Model Initialization
 # ========================================
-
+"""
 print('Initializing Chat')
 args = parse_args()
 cfg = Config(args)
@@ -40,12 +40,14 @@ vis_processor_cfg = cfg.datasets_cfg.webvid.vis_processor.train
 vis_processor = registry.get_processor_class(vis_processor_cfg.name).from_config(vis_processor_cfg)
 chat = Chat(model, vis_processor, device='cuda:{}'.format(args.gpu_id))
 print('Initialization Finished')
+"""
 
 # ========================================
 #             Process Videos
 # ========================================
 
 def process_videos(video_folder, chat, args):
+    video_folder = os.path.abspath(video_folder)
     chat_state = default_conversation.copy()
     img_list = []
     
