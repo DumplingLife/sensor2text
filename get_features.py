@@ -53,10 +53,12 @@ def process_videos(video_folder, chat, args):
     img_list = []
     
     for video_file in os.listdir(video_folder):
+        print(video_file)
         if video_file.endswith('.avi'):
             video_path = os.path.join(video_folder, video_file)
             print(f"Processing video: {video_path}")
             chat.upload_video(video_path, chat_state, img_list)
 
 
-process_videos(args.video_folder, chat, args)
+# process_videos(args.video_folder, chat, args)
+process_videos(args.video_folder, None, args)
