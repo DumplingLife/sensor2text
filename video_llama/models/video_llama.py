@@ -448,6 +448,7 @@ class VideoLLAMA(Blip2Base):
             if self.train_flag == 0:
                 num_patch_tokens = self.num_video_query_token
                 img_embeds, atts_img = self.encode_videoQformer_visual(image)
+                return {"loss": 0} # stop after calling encode_videoQformer_visual
             elif self.train_flag == 1:
                 num_patch_tokens = self.num_audio_query_token
                 image = einops.rearrange(image, 'b c t h w -> b t c h w')
@@ -497,6 +498,7 @@ class VideoLLAMA(Blip2Base):
                 img_embeds, atts_img = self.encode_audioQformer(image, modality_type=ModalityType.VISION)
             else:
                 img_embeds, atts_img = self.encode_videoQformer_visual(image)
+                return {"loss": 0} # stop after calling encode_videoQformer_visual
 
             if self.prompt_list:
                 prompt = random.choice(self.prompt_list)
