@@ -49,7 +49,7 @@ class EMG2VideoEmbeddingModel(nn.Module):
 # Custom collate function to handle padding
 def collate_fn(data):
     data.sort(key=lambda x: len(x[0]), reverse=True)
-    sequences, labels = zip(*data)
+    sample_id, sequences, labels = zip(*data)
     lengths = [len(seq) for seq in sequences]
     padded_sequences = pad_sequence(sequences, batch_first=True)
     return padded_sequences, torch.stack(labels), lengths
