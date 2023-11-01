@@ -52,7 +52,7 @@ def collate_fn(data):
     sample_id, sequences, labels = zip(*data)
     lengths = [len(seq) for seq in sequences]
     padded_sequences = pad_sequence(sequences, batch_first=True)
-    return padded_sequences, torch.stack(labels), lengths
+    return sample_id, padded_sequences, torch.stack(labels), lengths
 
 # Hyperparameters
 input_size = 8  # Each EMG sample has 8 channels
@@ -86,7 +86,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 for epoch in range(num_epochs):
     epoch_loss = 0.0
     progress_bar = tqdm(train_dataloader, desc=f"Epoch {epoch + 1}/{num_epochs}")
-    for emg_data, video_embedding, lengths in progress_bar:
+    for sample_id, emg_data, video_embedding, lengths in progress_bar:
         emg_data, video_embedding = emg_data.to(device), video_embedding.to(device)
         
         # Forward pass
