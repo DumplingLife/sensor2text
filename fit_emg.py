@@ -92,9 +92,6 @@ output_size = 131072  # Size of output video embedding
 num_layers = 4  # Number of layers in LSTM and Q-former
 dropout = 0.1  # Dropout rate
 
-model = EMGLanguageBranch(input_size, hidden_size, output_size, num_layers, dropout)
-model.to(device)
-
 batch_size = 32
 learning_rate = 0.001
 num_epochs = 10
@@ -106,7 +103,8 @@ dataset = EMGVideoDataset(emg_dir, video_embedding_dir)
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, collate_fn=collate_fn)
 
 # Initialize the model
-model = EMG2VideoEmbeddingModel(input_size, hidden_size, output_size, num_layers).to(device)
+model = EMGLanguageBranch(input_size, hidden_size, output_size, num_layers, dropout)
+model.to(device)
 criterion = nn.MSELoss()  # Mean Squared Error Loss
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
