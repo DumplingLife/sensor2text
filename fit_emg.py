@@ -26,7 +26,7 @@ class EMGVideoDataset(Dataset):
         emg_data = np.load(emg_path)
         video_embedding = np.load(video_embedding_path).reshape(-1)
 
-        return torch.tensor(emg_data, dtype=torch.float32), torch.tensor(video_embedding, dtype=torch.float32)
+        return sample_id, torch.tensor(emg_data, dtype=torch.float32), torch.tensor(video_embedding, dtype=torch.float32)
 
 # Define the model
 class EMG2VideoEmbeddingModel(nn.Module):
@@ -75,7 +75,7 @@ print(f"{train_size=} {test_size=}")
 
 train_dataset, test_dataset = torch.utils.data.random_split(dataset, [train_size, test_size])
 train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, collate_fn=collate_fn)
-test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False, collate_fn=collate_fn)
+test_dataloader = DataLoader(test_dataset, batch_size=1, shuffle=False, collate_fn=collate_fn)
 
 # Initialize the model
 model = EMG2VideoEmbeddingModel(input_size, hidden_size, output_size, num_layers).to(device)
@@ -86,7 +86,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 for epoch in range(num_epochs):
     epoch_loss = 0.0
     progress_bar = tqdm(train_dataloader, desc=f"Epoch {epoch + 1}/{num_epochs}")
-    for emg_data, video_embedding, lengths in progress_bar:
+    for sample_id, emg_data, video_embedding, lengths in progress_bar:
         emg_data, video_embedding = emg_data.to(device), video_embedding.to(device)
         
         # Forward pass
@@ -110,21 +110,16 @@ save_count = 0
 max_saves = 5  # Save results for first 5 examples
 
 with torch.no_grad():
-    for emg_data, video_embedding, lengths in test_dataloader:
+    for sample_id, emg_data, video_embedding, lengths in test_dataloader:
         emg_data, video_embedding = emg_data.to(device), video_embedding.to(device)
         
-        # Forward pass
         outputs = model(emg_data, lengths)
-
-        # Calculate the loss
         loss = criterion(outputs, video_embedding)
-
-        # Update total loss and sample count
         total_loss += loss.item()
 
-        # Save results for a few examples
+        # Save results for a few examples (first example of each batch, up to max_saves total)
         if save_count < max_saves:
-            np.save(f"inference_results_{save_count}.npy", outputs[0].cpu().numpy())
+            np.save(f"actionsense_data/pred_emg_video_embeddings/emg_pred_{sample_id}.npy", outputs[0].cpu().numpy())
             save_count += 1
 
 # Calculate mean loss
