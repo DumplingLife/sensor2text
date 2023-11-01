@@ -101,7 +101,7 @@ for epoch in range(num_epochs):
         epoch_loss += loss.item()
         progress_bar.set_postfix(loss=epoch_loss / len(train_dataloader))
 
-    print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {epoch_loss / train_size:.4f}")
+    print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {epoch_loss / len(train_dataloader):.4f}")
 
 # Test the model
 model.eval()
@@ -123,5 +123,5 @@ with torch.no_grad():
             save_count += 1
 
 # Calculate mean loss
-mean_loss = total_loss / test_size
+mean_loss = total_loss / len(test_dataloader)
 print(f"Mean loss on test set: {mean_loss:.4f}")
