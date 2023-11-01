@@ -6,6 +6,8 @@ from torch.nn.utils.rnn import pad_sequence, pack_padded_sequence
 from torch import nn
 from tqdm import tqdm
 
+device = torch.device("cuda")
+
 # Define the custom dataset
 class EMGVideoDataset(Dataset):
     def __init__(self, emg_dir, video_embedding_dir):
@@ -57,7 +59,7 @@ input_size = 8  # Each EMG sample has 8 channels
 hidden_size = 128  # Adjust this based on your requirements
 output_size = 131072  # Flattened video embeddings
 num_layers = 2  # Number of LSTM layers
-batch_size = 8
+batch_size = 32
 learning_rate = 0.001
 num_epochs = 10
 
@@ -68,22 +70,27 @@ dataset = EMGVideoDataset(emg_dir, video_embedding_dir)
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, collate_fn=collate_fn)
 
 # Initialize the model
-print("creating model...")
-model = EMG2VideoEmbeddingModel(input_size, hidden_size, output_size, num_layers)
-print(model)
+model = EMG2VideoEmbeddingModel(input_size, hidden_size, output_size, num_layers).to(device)
 criterion = nn.MSELoss()  # Mean Squared Error Loss
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 # Train the model
-for epoch in tqdm(range(num_epochs)):
-    for data in tqdm(dataloader):
-        emg_data, video_embedding, lengths = data
+for epoch in range(num_epochs):
+    epoch_loss = 0.0
+    progress_bar = tqdm(dataloader, desc=f"Epoch {epoch + 1}/{num_epochs}")
+    for emg_data, video_embedding, lengths in progress_bar:
+        emg_data, video_embedding = emg_data.to(device), video_embedding.to(device)
+        
         # Forward pass
         outputs = model(emg_data, lengths)
         loss = criterion(outputs, video_embedding)
+        
         # Backward pass and optimization
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-    
-    print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.4f}")
+
+        epoch_loss += loss.item()
+        progress_bar.set_postfix(loss=epoch_loss / len(dataloader))
+
+    print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {epoch_loss / len(dataloader):.4f}")
