@@ -119,7 +119,7 @@ with torch.no_grad():
 
         # Save results for a few examples (first example of each batch, up to max_saves total)
         if save_count < max_saves:
-            np.save(f"actionsense_data/pred_emg_video_embeddings/emg_pred_{sample_id}.npy", outputs[0].cpu().numpy())
+            np.save(f"actionsense_data/pred_emg_video_embeddings/emg_pred_{sample_id[0]}.npy", outputs[0].cpu().numpy())
             save_count += 1
 
 # Calculate mean loss
