@@ -64,10 +64,12 @@ learning_rate = 0.001
 num_epochs = 10
 
 # Load the dataset
-emg_dir = "actionsense_data/S00_emg_chunks"
-video_embedding_dir = "actionsense_data/S00_video_embeddings"
-dataset = EMGVideoDataset(emg_dir, video_embedding_dir)
-dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, collate_fn=collate_fn)
+train_size = int(0.8 * len(dataset))  # 80% of the dataset for training
+test_size = len(dataset) - train_size  # Remaining 20% for testing
+train_dataset, test_dataset = torch.utils.data.random_split(dataset, [train_size, test_size])
+
+train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, collate_fn=collate_fn)
+test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False, collate_fn=collate_fn)
 
 # Initialize the model
 model = EMG2VideoEmbeddingModel(input_size, hidden_size, output_size, num_layers).to(device)
@@ -77,7 +79,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 # Train the model
 for epoch in range(num_epochs):
     epoch_loss = 0.0
-    progress_bar = tqdm(dataloader, desc=f"Epoch {epoch + 1}/{num_epochs}")
+    progress_bar = tqdm(train_dataloader, desc=f"Epoch {epoch + 1}/{num_epochs}")
     for emg_data, video_embedding, lengths in progress_bar:
         emg_data, video_embedding = emg_data.to(device), video_embedding.to(device)
         
@@ -91,6 +93,36 @@ for epoch in range(num_epochs):
         optimizer.step()
 
         epoch_loss += loss.item()
-        progress_bar.set_postfix(loss=epoch_loss / len(dataloader))
+        progress_bar.set_postfix(loss=epoch_loss / len(train_dataloader))
 
-    print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {epoch_loss / len(dataloader):.4f}")
+    print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {epoch_loss / len(train_dataloader):.4f}")
+
+# Test the model
+model.eval()
+total_loss = 0.0
+num_samples = 0
+save_count = 0
+max_saves = 5  # Save results for first 5 examples
+
+with torch.no_grad():
+    for emg_data, video_embedding, lengths in test_dataloader:
+        emg_data, video_embedding = emg_data.to(device), video_embedding.to(device)
+        
+        # Forward pass
+        outputs = model(emg_data, lengths)
+
+        # Calculate the loss
+        loss = criterion(outputs, video_embedding)
+
+        # Update total loss and sample count
+        total_loss += loss.item()
+        num_samples += emg_data.size(0)
+
+        # Save results for a few examples
+        if save_count < max_saves:
+            np.save(f"inference_results_{save_count}.npy", outputs[0].cpu().numpy())
+            save_count += 1
+
+# Calculate mean loss
+mean_loss = total_loss / num_samples
+print(f"Mean loss on test set: {mean_loss:.4f}")
