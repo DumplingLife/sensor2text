@@ -61,8 +61,7 @@ class EMGLanguageBranch(nn.Module):
         
         # Position embedding
         position = torch.arange(0, output.size(1)).unsqueeze(-1).to(output.device)
-        position = self.position_embedding(position)
-        output = output + position
+        output = output + self.position_embedding[:, :position.size(1)]
         
         # EMG Q-former
         output = self.qformer(output)
@@ -76,6 +75,7 @@ class EMGLanguageBranch(nn.Module):
         output = output.sum(dim=1) / lengths.unsqueeze(-1).to(output.device)
         
         return output
+
 
 # Custom collate function to handle padding
 def collate_fn(data):
