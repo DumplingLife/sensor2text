@@ -86,7 +86,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 for epoch in range(num_epochs):
     epoch_loss = 0.0
     progress_bar = tqdm(train_dataloader, desc=f"Epoch {epoch + 1}/{num_epochs}")
-    for sample_id, emg_data, video_embedding, lengths in progress_bar:
+    for emg_data, video_embedding, lengths in progress_bar:
         emg_data, video_embedding = emg_data.to(device), video_embedding.to(device)
         
         # Forward pass
