@@ -5,7 +5,8 @@ from video_llama.common.config import Config
 from video_llama.common.registry import registry
 from video_llama.conversation.conversation_video import Chat, default_conversation
 
-from video_name import video_name
+from my_global_settings import settings
+settings["get_features"] = True
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Demo")
@@ -56,7 +57,7 @@ def process_videos(video_folder, chat, args):
         if video_file.endswith('.avi'):
             video_path = os.path.join(video_folder, video_file)
             print(f"Processing video: {video_path}")
-            video_name.name = video_file
+            settings["feature_name"] = video_file
             chat.upload_video(video_path, chat_state, img_list)
 
 
