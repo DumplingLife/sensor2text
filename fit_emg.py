@@ -64,6 +64,11 @@ learning_rate = 0.001
 num_epochs = 10
 
 # Load the dataset
+emg_dir = "actionsense_data/S00_emg_chunks"
+video_embedding_dir = "actionsense_data/S00_video_embeddings"
+dataset = EMGVideoDataset(emg_dir, video_embedding_dir)
+dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, collate_fn=collate_fn)
+
 train_size = int(0.8 * len(dataset))  # 80% of the dataset for training
 test_size = len(dataset) - train_size  # Remaining 20% for testing
 train_dataset, test_dataset = torch.utils.data.random_split(dataset, [train_size, test_size])
