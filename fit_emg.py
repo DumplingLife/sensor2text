@@ -16,7 +16,7 @@ class EMGVideoDataset(Dataset):
 
     def __getitem__(self, index):
         sample_id = self.samples[index]
-        emg_path = os.path.join(self.emg_dir, f"{sample_id}.npy")
+        emg_path = os.path.join(self.emg_dir, f"emg_{sample_id}.npy")
         video_embedding_path = os.path.join(self.video_embedding_dir, f"video_{sample_id}", "inputs_llama.npy")
 
         emg_data = np.load(emg_path)
