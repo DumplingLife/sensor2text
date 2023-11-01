@@ -53,8 +53,8 @@ learning_rate = 0.001
 num_epochs = 10
 
 # Load the dataset
-emg_dir = "S00_emg_chunks"
-video_embedding_dir = "S00_video_embeddings"
+emg_dir = "actionsense_data/S00_emg_chunks"
+video_embedding_dir = "actionsense_data/S00_video_embeddings"
 dataset = EMGVideoDataset(emg_dir, video_embedding_dir)
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
