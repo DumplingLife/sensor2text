@@ -68,7 +68,9 @@ dataset = EMGVideoDataset(emg_dir, video_embedding_dir)
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, collate_fn=collate_fn)
 
 # Initialize the model
+print("creating model...")
 model = EMG2VideoEmbeddingModel(input_size, hidden_size, output_size, num_layers)
+print(model)
 criterion = nn.MSELoss()  # Mean Squared Error Loss
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
