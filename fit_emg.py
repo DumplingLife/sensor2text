@@ -100,12 +100,11 @@ for epoch in range(num_epochs):
         epoch_loss += loss.item()
         progress_bar.set_postfix(loss=epoch_loss / len(train_dataloader))
 
-    print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {epoch_loss / len(train_dataloader):.4f}")
+    print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {epoch_loss / train_size:.4f}")
 
 # Test the model
 model.eval()
 total_loss = 0.0
-num_samples = 0
 save_count = 0
 max_saves = 5  # Save results for first 5 examples
 
@@ -121,7 +120,6 @@ with torch.no_grad():
 
         # Update total loss and sample count
         total_loss += loss.item()
-        num_samples += emg_data.size(0)
 
         # Save results for a few examples
         if save_count < max_saves:
@@ -129,5 +127,5 @@ with torch.no_grad():
             save_count += 1
 
 # Calculate mean loss
-mean_loss = total_loss / num_samples
+mean_loss = total_loss / test_size
 print(f"Mean loss on test set: {mean_loss:.4f}")
