@@ -29,22 +29,53 @@ class EMGVideoDataset(Dataset):
         return torch.tensor(emg_data, dtype=torch.float32), torch.tensor(video_embedding, dtype=torch.float32)
 
 # Define the model
-class EMG2VideoEmbeddingModel(nn.Module):
-    def __init__(self, input_size, hidden_size, output_size, num_layers):
-        super(EMG2VideoEmbeddingModel, self).__init__()
-        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)
-        self.fc = nn.Linear(hidden_size, output_size)
-
+class EMGLanguageBranch(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size, num_layers, dropout):
+        super(EMGLanguageBranch, self).__init__()
+        
+        # LSTM-based EMG encoder
+        self.lstm = nn.LSTM(input_size=input_size,
+                            hidden_size=hidden_size,
+                            num_layers=num_layers,
+                            batch_first=True,
+                            dropout=dropout)
+        
+        # Position embedding layer
+        self.position_embedding = nn.Parameter(torch.randn(1, hidden_size))
+        
+        # EMG Q-former
+        self.qformer = nn.TransformerEncoder(
+            nn.TransformerEncoderLayer(
+                d_model=hidden_size,
+                nhead=8,  # Number of attention heads
+                dim_feedforward=2048,  # Dimension of feedforward network model
+                dropout=dropout),
+            num_layers=num_layers)
+        
+        # Linear layer to map EMG representation into the embedding space
+        self.linear = nn.Linear(hidden_size, output_size)
+        
     def forward(self, x, lengths):
-        # Pack padded sequence
-        x = pack_padded_sequence(x, lengths, batch_first=True, enforce_sorted=False)
-
-        # Forward propagate LSTM
-        packed_out, (hn, cn) = self.lstm(x)
-
-        # Decode the hidden state of the last time step
-        out = self.fc(hn[-1])
-        return out
+        # LSTM-based EMG encoder
+        output, (hn, cn) = self.lstm(x)
+        
+        # Position embedding
+        position = torch.arange(0, output.size(1)).unsqueeze(-1).to(output.device)
+        position = self.position_embedding(position)
+        output = output + position
+        
+        # EMG Q-former
+        output = self.qformer(output)
+        
+        # Linear layer
+        output = self.linear(output)
+        
+        # Average pooling over sequence length
+        mask = (torch.arange(output.size(1)).unsqueeze(0).to(output.device) >= lengths.unsqueeze(1))
+        output = output.masked_fill(mask.unsqueeze(-1), 0)
+        output = output.sum(dim=1) / lengths.unsqueeze(-1).to(output.device)
+        
+        return output
 
 # Custom collate function to handle padding
 def collate_fn(data):
@@ -55,10 +86,15 @@ def collate_fn(data):
     return padded_sequences, torch.stack(labels), lengths
 
 # Hyperparameters
-input_size = 8  # Each EMG sample has 8 channels
-hidden_size = 128  # Adjust this based on your requirements
-output_size = 131072  # Flattened video embeddings
-num_layers = 2  # Number of LSTM layers
+input_size = 8  # Size of EMG data input
+hidden_size = 512  # Hidden size of LSTM and Q-former
+output_size = 131072  # Size of output video embedding
+num_layers = 4  # Number of layers in LSTM and Q-former
+dropout = 0.1  # Dropout rate
+
+model = EMGLanguageBranch(input_size, hidden_size, output_size, num_layers, dropout)
+model.to(device)
+
 batch_size = 32
 learning_rate = 0.001
 num_epochs = 10
