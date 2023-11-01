@@ -2,6 +2,7 @@ import os
 import numpy as np
 import torch
 from torch.utils.data import Dataset, DataLoader
+from torch.nn.utils.rnn import pad_sequence, pack_padded_sequence
 from torch import nn
 
 # Define the custom dataset
@@ -31,17 +32,24 @@ class EMG2VideoEmbeddingModel(nn.Module):
         self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)
         self.fc = nn.Linear(hidden_size, output_size)
 
-    def forward(self, x):
-        # Set initial hidden and cell states
-        h0 = torch.zeros(self.lstm.num_layers, x.size(0), self.lstm.hidden_size).to(x.device)
-        c0 = torch.zeros(self.lstm.num_layers, x.size(0), self.lstm.hidden_size).to(x.device)
-        
+    def forward(self, x, lengths):
+        # Pack padded sequence
+        x = pack_padded_sequence(x, lengths, batch_first=True, enforce_sorted=False)
+
         # Forward propagate LSTM
-        out, _ = self.lstm(x, (h0, c0))
-        
+        packed_out, (hn, cn) = self.lstm(x)
+
         # Decode the hidden state of the last time step
-        out = self.fc(out[:, -1, :])
+        out = self.fc(hn[-1])
         return out
+
+# Custom collate function to handle padding
+def collate_fn(data):
+    data.sort(key=lambda x: len(x[0]), reverse=True)
+    sequences, labels = zip(*data)
+    lengths = [len(seq) for seq in sequences]
+    padded_sequences = pad_sequence(sequences, batch_first=True)
+    return padded_sequences, torch.stack(labels), lengths
 
 # Hyperparameters
 input_size = 8  # Each EMG sample has 8 channels
@@ -56,7 +64,7 @@ num_epochs = 10
 emg_dir = "actionsense_data/S00_emg_chunks"
 video_embedding_dir = "actionsense_data/S00_video_embeddings"
 dataset = EMGVideoDataset(emg_dir, video_embedding_dir)
-dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, collate_fn=collate_fn)
 
 # Initialize the model
 model = EMG2VideoEmbeddingModel(input_size, hidden_size, output_size, num_layers)
@@ -66,9 +74,9 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 # Train the model
 for epoch in range(num_epochs):
     for data in dataloader:
-        emg_data, video_embedding = data
+        emg_data, video_embedding, lengths = data
         # Forward pass
-        outputs = model(emg_data)
+        outputs = model(emg_data, lengths)
         loss = criterion(outputs, video_embedding)
         # Backward pass and optimization
         optimizer.zero_grad()
