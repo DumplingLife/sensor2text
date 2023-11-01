@@ -57,7 +57,7 @@ input_size = 8  # Each EMG sample has 8 channels
 hidden_size = 128  # Adjust this based on your requirements
 output_size = 131072  # Flattened video embeddings
 num_layers = 2  # Number of LSTM layers
-batch_size = 32
+batch_size = 8
 learning_rate = 0.001
 num_epochs = 10
 
