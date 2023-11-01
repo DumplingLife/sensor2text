@@ -4,6 +4,7 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 from torch.nn.utils.rnn import pad_sequence, pack_padded_sequence
 from torch import nn
+from tqdm import tqdm
 
 # Define the custom dataset
 class EMGVideoDataset(Dataset):
@@ -72,8 +73,8 @@ criterion = nn.MSELoss()  # Mean Squared Error Loss
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 # Train the model
-for epoch in range(num_epochs):
-    for data in dataloader:
+for epoch in tqdm(range(num_epochs)):
+    for data in tqdm(dataloader):
         emg_data, video_embedding, lengths = data
         # Forward pass
         outputs = model(emg_data, lengths)
