@@ -49,7 +49,6 @@ class EMG2VideoEmbeddingModel(nn.Module):
         return x
 
 class PositionalEncoding(nn.Module):
-
     def __init__(self, d_model, max_len=5000):
         super(PositionalEncoding, self).__init__()
         self.encoding = torch.zeros(max_len, d_model).to(device)
