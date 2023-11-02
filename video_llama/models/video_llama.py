@@ -336,7 +336,9 @@ class VideoLLAMA(Blip2Base):
 
         # my stuff: sub in saved EMG embedding
         if settings["use_emg_embedding"]:
-            inputs_llama = torch.from_numpy(np.load('actionsense_data/pred_emg_video_embeddings/emg_pred_090.npy')
+            print("input video id (e.g. 090):")
+            video_id = input() # input: 090
+            inputs_llama = torch.from_numpy(np.load(f'actionsense_data/pred_emg_video_embeddings/emg_pred_{video_id}.npy')
                 .reshape(1, 32, 4096)).to(device)
 
         return inputs_llama, atts_llama
