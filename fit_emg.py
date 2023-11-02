@@ -72,10 +72,12 @@ def collate_fn(data):
     return sample_id, padded_sequences, torch.stack(labels), lengths
 
 # Hyperparameters
-input_size = 8  # Each EMG sample has 8 channels
-hidden_size = 128  # Adjust this based on your requirements
-output_size = 131072  # Flattened video embeddings
-num_layers = 2  # Number of LSTM layers
+input_size = 8
+hidden_size = 512
+output_size = 131072
+num_layers = 4
+nhead = 8
+
 batch_size = 32
 learning_rate = 0.001
 num_epochs = 10
@@ -95,7 +97,7 @@ train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True
 test_dataloader = DataLoader(test_dataset, batch_size=1, shuffle=False, collate_fn=collate_fn)
 
 # Initialize the model
-model = EMG2VideoEmbeddingModel(input_size, hidden_size, output_size, num_layers).to(device)
+model = EMG2VideoEmbeddingModel(input_size, hidden_size, output_size, num_layers, nhead).to(device)
 criterion = nn.MSELoss()  # Mean Squared Error Loss
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
