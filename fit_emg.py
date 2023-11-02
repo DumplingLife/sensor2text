@@ -78,7 +78,8 @@ output_size = 131072
 num_layers = 4
 nhead = 8
 
-batch_size = 32
+# batch_size = 32
+batch_size = 16
 learning_rate = 0.001
 num_epochs = 10
 
