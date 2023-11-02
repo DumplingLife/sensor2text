@@ -5,6 +5,7 @@ from torch.utils.data import Dataset, DataLoader
 from torch.nn.utils.rnn import pad_sequence, pack_padded_sequence
 from torch import nn
 from tqdm import tqdm
+import math
 
 device = torch.device("cuda")
 
@@ -28,23 +29,39 @@ class EMGVideoDataset(Dataset):
 
         return sample_id, torch.tensor(emg_data, dtype=torch.float32), torch.tensor(video_embedding, dtype=torch.float32)
 
-# Define the model
+# model
 class EMG2VideoEmbeddingModel(nn.Module):
-    def __init__(self, input_size, hidden_size, output_size, num_layers):
+    def __init__(self, input_size, hidden_size, output_size, num_layers, nhead):
         super(EMG2VideoEmbeddingModel, self).__init__()
-        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)
+        self.embedding = nn.Linear(input_size, hidden_size)
+        self.pos_encoder = PositionalEncoding(hidden_size)
+        self.transformer_encoder = nn.TransformerEncoder(nn.TransformerEncoderLayer(d_model=hidden_size, nhead=nhead), num_layers=num_layers)
         self.fc = nn.Linear(hidden_size, output_size)
 
     def forward(self, x, lengths):
-        # Pack padded sequence
+        x = self.embedding(x)
+        x = self.pos_encoder(x)
         x = pack_padded_sequence(x, lengths, batch_first=True, enforce_sorted=False)
+        x, _ = pack_padded_sequence(x, batch_first=True)
+        x = self.transformer_encoder(x)
+        x = x.mean(dim=1)
+        x = self.fc(x)
+        return x
 
-        # Forward propagate LSTM
-        packed_out, (hn, cn) = self.lstm(x)
+class PositionalEncoding(nn.Module):
 
-        # Decode the hidden state of the last time step
-        out = self.fc(hn[-1])
-        return out
+    def __init__(self, d_model, max_len=5000):
+        super(PositionalEncoding, self).__init__()
+        self.encoding = torch.zeros(max_len, d_model)
+        position = torch.arange(0, max_len).unsqueeze(1).float()
+        div_term = torch.exp(torch.arange(0, d_model, 2).float() * -(math.log(10000.0) / d_model))
+        self.encoding[:, 0::2] = torch.sin(position * div_term)
+        self.encoding[:, 1::2] = torch.cos(position * div_term)
+        self.encoding = self.encoding.unsqueeze(0)
+
+    def forward(self, x):
+        return x + self.encoding[:, :x.size(1)].detach()
+
 
 # Custom collate function to handle padding
 def collate_fn(data):
