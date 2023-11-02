@@ -2,7 +2,7 @@ import os
 import numpy as np
 import torch
 from torch.utils.data import Dataset, DataLoader
-from torch.nn.utils.rnn import pad_sequence, pack_padded_sequence
+from torch.nn.utils.rnn import pad_sequence, pack_padded_sequence, pad_packed_sequence
 from torch import nn
 from tqdm import tqdm
 import math
@@ -42,7 +42,7 @@ class EMG2VideoEmbeddingModel(nn.Module):
         x = self.embedding(x)
         x = self.pos_encoder(x)
         x = pack_padded_sequence(x, lengths, batch_first=True, enforce_sorted=False)
-        x, _ = pack_padded_sequence(x, batch_first=True)
+        x, _ = pad_packed_sequence(x, batch_first=True)
         x = self.transformer_encoder(x)
         x = x.mean(dim=1)
         x = self.fc(x)
