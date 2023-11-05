@@ -71,7 +71,8 @@ def collate_fn(data):
     return sample_id, padded_sequences, torch.stack(labels), lengths
 
 # Hyperparameters
-input_size = 8
+# input_size = 8
+input_size = 16 # preprocessed has 16 (becuase left and right); original had 8
 hidden_size = 512
 output_size = 131072
 num_layers = 4
@@ -83,7 +84,8 @@ learning_rate = 0.001
 num_epochs = 10
 
 # Load the dataset
-emg_dir = "actionsense_data/S00_emg_chunks"
+# emg_dir = "actionsense_data/S00_emg_chunks"
+emg_dir = "actionsense_data/S00_emg_chunks_preprocessed"
 video_embedding_dir = "actionsense_data/S00_video_embeddings"
 dataset = EMGVideoDataset(emg_dir, video_embedding_dir)
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, collate_fn=collate_fn)
