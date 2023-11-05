@@ -323,6 +323,7 @@ class VideoLLAMA(Blip2Base):
                 )
             video_hidden = video_query_output.last_hidden_state
 
+            print("video_hidden shape", video_hidden.shape)
             inputs_llama = self.llama_proj(video_hidden)
             atts_llama = torch.ones(inputs_llama.size()[:-1], dtype=torch.long).to(image_embeds.device)
 
