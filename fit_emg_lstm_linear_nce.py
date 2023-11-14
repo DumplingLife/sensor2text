@@ -82,12 +82,12 @@ model = EMG2VideoEmbeddingModel(input_size, hidden_size, output_size, num_layers
 
 mse_loss = nn.MSELoss()
 def nce_loss(embeddings, tau=0.05):
-    dot_products = np.matmul(embeddings, embeddings.T) / tau
-    exps = np.exp(dot_products - np.max(dot_products, axis=1, keepdims=True))
-    exps[np.arange(len(exps)), np.arange(len(exps))] = 0  # Zero-out diagonals
-    exp_sums = np.sum(exps, axis=1, keepdims=True)
-    losses = -np.log(1e-10 + exps / (exp_sums + 1e-10))
-    return np.mean(np.diag(losses))
+    dot_products = torch.matmul(embeddings, embeddings.T) / tau
+    exps = torch.exp(dot_products - torch.max(dot_products, dim=1, keepdim=True)[0])
+    exps.fill_diagonal_(0)  # Zero-out diagonals
+    exp_sums = torch.sum(exps, dim=1, keepdim=True)
+    losses = -torch.log(exps.diag() / (exp_sums + 1e-10))
+    return losses.mean()
 
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
