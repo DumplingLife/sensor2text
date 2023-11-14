@@ -84,8 +84,7 @@ mse_loss = nn.MSELoss()
 def nce_loss(embeddings, tau=0.05):
     dot_products = torch.matmul(embeddings, embeddings.T) / tau
     masks = torch.eye(dot_products.size(0), device=embeddings.device).bool()
-    dot_products_masked = torch.where(masks, torch.full_like(dot_products, float('-inf')), dot_products)
-    logsumexp = torch.logsumexp(dot_products_masked, dim=1)
+    logsumexp = torch.logsumexp(dot_products, dim=1)
     positives = dot_products.diagonal()
     losses = -positives + logsumexp
 
