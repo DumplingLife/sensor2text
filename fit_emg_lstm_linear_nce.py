@@ -81,12 +81,14 @@ test_dataloader = DataLoader(test_dataset, batch_size=1, shuffle=False, collate_
 model = EMG2VideoEmbeddingModel(input_size, hidden_size, output_size, num_layers).to(device)
 
 mse_loss = nn.MSELoss()
-def nce_loss(embeddings, tau=0.05):
+def single_modality_info_nce_loss(embeddings, tau=0.05):
     dot_products = torch.matmul(embeddings, embeddings.T) / tau
-    exps = torch.exp(dot_products - torch.max(dot_products, dim=1, keepdim=True)[0])
-    exps = exps - torch.diag_embed(exps.diagonal())
-    exp_sums = torch.sum(exps, dim=1)
-    losses = -torch.log(exps.diag() / (exp_sums + 1e-10))
+    masks = torch.eye(dot_products.size(0), device=embeddings.device).bool()
+    dot_products.masked_fill_(masks, float('-inf'))
+    logsumexp = torch.logsumexp(dot_products, dim=1)
+    positives = dot_products.diagonal()
+    losses = -positives + logsumexp
+
     return losses.mean()
 
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
