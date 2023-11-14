@@ -81,7 +81,7 @@ test_dataloader = DataLoader(test_dataset, batch_size=1, shuffle=False, collate_
 model = EMG2VideoEmbeddingModel(input_size, hidden_size, output_size, num_layers).to(device)
 
 mse_loss = nn.MSELoss()
-def nce_loss(embeddings, tau=0.2):
+def nce_loss(embeddings, tau=2.0):
     dot_products = torch.matmul(embeddings, embeddings.T) / tau
     masks = torch.eye(dot_products.size(0), device=embeddings.device).bool()
     logsumexp = torch.logsumexp(dot_products, dim=1)
