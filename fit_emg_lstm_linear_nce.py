@@ -84,8 +84,8 @@ mse_loss = nn.MSELoss()
 def nce_loss(embeddings, tau=0.05):
     dot_products = torch.matmul(embeddings, embeddings.T) / tau
     exps = torch.exp(dot_products - torch.max(dot_products, dim=1, keepdim=True)[0])
-    exps.fill_diagonal_(0)  # Zero-out diagonals
-    exp_sums = torch.sum(exps, dim=1, keepdim=True)
+    exps = exps - torch.diag_embed(exps.diagonal())
+    exp_sums = torch.sum(exps, dim=1)
     losses = -torch.log(exps.diag() / (exp_sums + 1e-10))
     return losses.mean()
 
