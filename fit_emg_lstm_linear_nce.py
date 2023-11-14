@@ -81,7 +81,7 @@ test_dataloader = DataLoader(test_dataset, batch_size=1, shuffle=False, collate_
 model = EMG2VideoEmbeddingModel(input_size, hidden_size, output_size, num_layers).to(device)
 
 mse_loss = nn.MSELoss()
-def single_modality_info_nce_loss(embeddings, tau=0.05):
+def nce_loss(embeddings, tau=0.05):
     dot_products = torch.matmul(embeddings, embeddings.T) / tau
     masks = torch.eye(dot_products.size(0), device=embeddings.device).bool()
     dot_products.masked_fill_(masks, float('-inf'))
