@@ -269,20 +269,17 @@ class Chat:
                 audio_emb,_  = self.model.encode_audioQformer(audio)
                 # audio_emb,_  = self.model.encode_audioQformer(video, modality_type=ModalityType.VISION)
                 print(audio_emb)
+                print(image_emb)
 
                 img_list.append(audio_emb)
                 img_list.append(image_emb)
                 conv.system = ""
                 # conv.append_message(conv.roles[0], "The audio of this video is <Video><ImageHere></Video> ")
                 
-                """
                 conv.append_message(conv.roles[0], "Close your eyes, open your ears and you imagine only based on the sound that: <ImageHere>. \
                 Close your ears, open your eyes and you see that <Video><ImageHere></Video>.  \
                 Now answer my question based on what you have just seen and heard.")
-                """
-
-                conv.append_message(conv.roles[0], "Close your eyes, open your ears and you imagine only based on the sound that: <AudioHere>. Close your ears, open your eyes and you see that <Video><ImageHere></Video>. Now answer my question based on what you have just seen and heard.")
-
+                
             else:  # only vison no audio
                 # conv.system = "You can understand the video that the user provides. Follow the instructions carefully and explain your answers in detail."
                 image_emb, _ = self.model.encode_videoQformer_visual(video)
