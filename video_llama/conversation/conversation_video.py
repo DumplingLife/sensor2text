@@ -261,7 +261,10 @@ class Chat:
             if audio_flag == 1:
                 # image_emb, _ = self.model.encode_videoQformer_audiovideo(video,audio)
                 image_emb, _ = self.model.encode_videoQformer_visual(video)
-                audio_emb,_  = self.model.encode_audioQformer(audio)
+                
+                # audio_emb,_  = self.model.encode_audioQformer(audio)
+                audio_emb,_  = self.model.encode_audioQformer(video)
+
                 img_list.append(audio_emb)
                 img_list.append(image_emb)
                 conv.system = ""
