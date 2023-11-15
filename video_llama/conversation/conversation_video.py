@@ -20,6 +20,9 @@ from video_llama.processors.video_processor import ToTHWC,ToUint8,load_video
 from video_llama.processors import Blip2ImageEvalProcessor
             
 from video_llama.models.ImageBind.data import load_and_transform_audio_data
+
+from video_llama.models.ImageBind.models.imagebind_model import ModalityType
+
 class SeparatorStyle(Enum):
     """Different separator style."""
     SINGLE = auto()
@@ -263,7 +266,7 @@ class Chat:
                 image_emb, _ = self.model.encode_videoQformer_visual(video)
                 
                 # audio_emb,_  = self.model.encode_audioQformer(audio)
-                audio_emb,_  = self.model.encode_audioQformer(video)
+                audio_emb,_  = self.model.encode_audioQformer(video, modality_type=ModalityType.VISION)
 
                 img_list.append(audio_emb)
                 img_list.append(image_emb)
