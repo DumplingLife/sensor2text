@@ -265,11 +265,8 @@ class Chat:
                 # image_emb, _ = self.model.encode_videoQformer_audiovideo(video,audio)
                 image_emb, _ = self.model.encode_videoQformer_visual(video)
                 
-                print("getting audio_emb")
-                audio_emb,_  = self.model.encode_audioQformer(audio)
-                # audio_emb,_  = self.model.encode_audioQformer(video, modality_type=ModalityType.VISION)
-                print(audio_emb)
-                print(image_emb)
+                # audio_emb,_  = self.model.encode_audioQformer(audio)
+                audio_emb,_  = self.model.encode_audioQformer(video, modality_type=ModalityType.VISION) # === my stuff
 
                 """
                 img_list.append(audio_emb)
