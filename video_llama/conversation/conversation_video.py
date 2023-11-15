@@ -284,6 +284,8 @@ class Chat:
             return "Received."
 
     def upload_video_without_audio(self, video_path, conv, img_list):
+        print("called upload_video_without_audio")
+
         msg = ""
         if isinstance(video_path, str):  # is a video path
             ext = os.path.splitext(video_path)[-1].lower()
