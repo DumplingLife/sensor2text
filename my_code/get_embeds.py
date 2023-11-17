@@ -2,7 +2,7 @@ from video_llama.models.ImageBind.models import imagebind_model
 from video_llama.models.ImageBind.models.imagebind_model import ModalityType
 from video_llama.models.ImageBind import data
 import torch
-import os
+import numpy as np
 
 device = "cuda:0"
 
@@ -21,4 +21,5 @@ with torch.no_grad():
     embeddings = model(inputs)
 
 print(embeddings["vision"].shape)
-print(embeddings)
+for i in range(embeddings["vision"].shape[0]):
+    np.save(f"actionsense_data/S00_imagebind_embeds/{i:03d}.npy", embeddings["vision"][i])
