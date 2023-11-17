@@ -6,7 +6,7 @@ import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
 from my_code.model import Model
 import os
-import tqdm
+from tqdm import tqdm
 
 class ActionSenseDataset(Dataset):
     def __init__(self, data_dir, target_dir):
