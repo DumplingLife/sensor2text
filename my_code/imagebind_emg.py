@@ -9,7 +9,7 @@ device = "cuda:0"
 model, emb_size = imagebind_model.imagebind_huge()
 model.load_state_dict(torch.load("../Video-LLaMA-2-7B-Finetuned/imagebind_huge.pth"))
 
-video_dir = "../actionsense_data/videos_processed/2022-06-07_18-11-37_S00_eye-tracking-video-worldGaze_frame"
+video_dir = "actionsense_data/videos_processed/2022-06-07_18-11-37_S00_eye-tracking-video-worldGaze_frame"
 video_paths = [f"{video_dir}/video_{x:03d}.avi" for x in range(230)]
 
 inputs = {
