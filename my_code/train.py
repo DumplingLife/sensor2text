@@ -6,6 +6,7 @@ import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
 from my_code.model import Model
 import os
+import tqdm
 
 class ActionSenseDataset(Dataset):
     def __init__(self, data_dir, target_dir):
@@ -48,11 +49,10 @@ model = Model(d_model=d_model, nhead=nhead, num_layers=num_layers)
 loss_function = ContrastiveLoss()
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
-for epoch in range(epochs):
-    for i, (inputs, targets) in enumerate(dataloader):
+for epoch in tqdm(range(epochs)):
+    for i, (inputs, targets) in tqdm(enumerate(dataloader)):
         optimizer.zero_grad()
         outputs = model(inputs)
-        print(outputs.shape, targets.shape)
         loss = loss_function(outputs, targets)
         loss.backward()
         optimizer.step()
