@@ -52,6 +52,7 @@ for epoch in range(epochs):
     for i, (inputs, targets) in enumerate(dataloader):
         optimizer.zero_grad()
         outputs = model(inputs)
+        print(outputs.shape, targets.shape)
         loss = loss_function(outputs, targets)
         loss.backward()
         optimizer.step()
