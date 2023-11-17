@@ -9,7 +9,7 @@ import os
 
 class ActionSenseDataset(Dataset):
     def __init__(self, data_dir, target_dir):
-        self.data_files = [f"{data_dir}/{i:03d}.npy" for i in range(len(os.listdir(data_dir)))]
+        self.data_files = [f"{data_dir}/emg_{i:03d}.npy" for i in range(len(os.listdir(data_dir)))]
         self.target_files = [f"{target_dir}/{i:03d}.npy" for i in range(len(os.listdir(target_dir)))]
 
     def __len__(self):
