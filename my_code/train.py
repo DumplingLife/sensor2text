@@ -61,3 +61,17 @@ for epoch in tqdm(range(epochs)):
             print(f"Epoch [{epoch+1}/{epochs}], Step [{i+1}/{len(dataloader)}], Loss: {loss.item()}")
 
 print("Training Complete")
+
+# testing stuff
+
+outputs = [None] * 230
+targets_list = [None] * 230
+for i, (inputs, targets) in enumerate(DataLoader(dataset, batch_size=1, shuffle=True)):
+    with torch.no_grad():
+        outputs[i] = model(inputs)
+        targets_list[i] = targets
+        print(torch.mean((outputs-targets)**2)) # MSE
+
+mean_output = sum(outputs) / 230
+for output in outputs:
+    print(torch.mean((outputs-output)**2))
