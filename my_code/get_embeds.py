@@ -11,7 +11,7 @@ model.load_state_dict(torch.load("../Video-LLaMA-2-7B-Finetuned/imagebind_huge.p
 model.to(device)
 
 # Define batch size
-batch_size = 32
+batch_size = 8
 
 # Process in batches
 for batch_start in range(0, 230, batch_size):
