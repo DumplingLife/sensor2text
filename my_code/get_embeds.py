@@ -23,4 +23,4 @@ for x in range(230):
         embeddings = model(inputs)
 
     print(embeddings["vision"].shape)
-    np.save(f"actionsense_data/S00_imagebind_embeds/{x:03d}.npy", embeddings["vision"][0])
+    np.save(f"actionsense_data/S00_imagebind_embeds/{x:03d}.npy", embeddings["vision"][0].cpu().numpy())
