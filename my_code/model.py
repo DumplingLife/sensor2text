@@ -28,9 +28,9 @@ class Model(nn.Module):
 
     def forward(self, x):
         cls_tokens = self.cls_token.expand(-1, x.size(1), -1)
-        x = torch.cat((cls_tokens, x), dim=0)
+        x = torch.cat((cls_tokens, x), dim=1)
         x = self.pos_encoder(x)
         x = self.encoder(x)
         print(x.shape)
-        cls_token_output = x[0, :, :]
+        cls_token_output = x[:, 0, :]
         return self.output_projection(cls_token_output)
