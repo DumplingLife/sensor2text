@@ -10,16 +10,17 @@ model, emb_size = imagebind_model.imagebind_huge()
 model.load_state_dict(torch.load("../Video-LLaMA-2-7B-Finetuned/imagebind_huge.pth"))
 model.to(device)
 
-video_dir = "actionsense_data/videos_processed/2022-06-07_18-11-37_S00_eye-tracking-video-worldGaze_frame"
-video_paths = [f"{video_dir}/video_{x:03d}.avi" for x in range(230)]
+for x in range(230):
+    print(x)
+    video_dir = "actionsense_data/videos_processed/2022-06-07_18-11-37_S00_eye-tracking-video-worldGaze_frame"
+    video_paths = [f"{video_dir}/video_{x:03d}.avi"]
 
-inputs = {
-    ModalityType.VISION: data.load_and_transform_video_data(video_paths, device)
-}
+    inputs = {
+        ModalityType.VISION: data.load_and_transform_video_data(video_paths, device)
+    }
 
-with torch.no_grad():
-    embeddings = model(inputs)
+    with torch.no_grad():
+        embeddings = model(inputs)
 
-print(embeddings["vision"].shape)
-for i in range(embeddings["vision"].shape[0]):
-    np.save(f"actionsense_data/S00_imagebind_embeds/{i:03d}.npy", embeddings["vision"][i])
+    print(embeddings["vision"].shape)
+    np.save(f"actionsense_data/S00_imagebind_embeds/{x:03d}.npy", embeddings["vision"][0])
