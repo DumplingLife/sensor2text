@@ -5,6 +5,7 @@ import torch.optim as optim
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
 from my_code.model import Model
+import os
 
 class ActionSenseDataset(Dataset):
     def __init__(self, data_dir, target_dir):
