@@ -16,7 +16,6 @@ video_paths = [f"{video_dir}/video_{x:03d}.avi" for x in range(20)]
 inputs = {
     ModalityType.VISION: data.load_and_transform_video_data(video_paths, device)
 }
-print(inputs)
 
 with torch.no_grad():
     embeddings = model(inputs)
