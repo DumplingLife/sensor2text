@@ -31,5 +31,6 @@ class Model(nn.Module):
         x = torch.cat((cls_tokens, x), dim=0)
         x = self.pos_encoder(x)
         x = self.encoder(x)
-        cls_token_output = x[:, 0, :]
+        print(x.shape)
+        cls_token_output = x[0, :, :]
         return self.output_projection(cls_token_output)
