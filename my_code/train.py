@@ -50,7 +50,7 @@ loss_function = ContrastiveLoss()
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
 for epoch in tqdm(range(epochs)):
-    for i, (inputs, targets) in tqdm(enumerate(dataloader)):
+    for i, (inputs, targets) in enumerate(dataloader):
         optimizer.zero_grad()
         outputs = model(inputs)
         loss = loss_function(outputs, targets)
