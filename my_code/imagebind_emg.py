@@ -20,5 +20,5 @@ inputs = {
 with torch.no_grad():
     embeddings = model(inputs)
 
-print(embeddings.shape)
+print(embeddings["vision"].shape)
 print(embeddings)
