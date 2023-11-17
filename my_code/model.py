@@ -27,7 +27,7 @@ class Model(nn.Module):
         self.output_projection = nn.Linear(d_model, 1024)
 
     def forward(self, x):
-        cls_tokens = self.cls_token.expand(-1, x.size(1), -1)
+        cls_tokens = self.cls_token.expand(x.size(0), -1, -1)
         x = torch.cat((cls_tokens, x), dim=1)
         x = self.pos_encoder(x)
         x = self.encoder(x)
