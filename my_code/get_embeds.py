@@ -27,6 +27,8 @@ for batch_start in range(0, 230, batch_size):
 
     with torch.no_grad():
         embeddings = model(inputs)
+    print(embeddings["vision"].shape)
+    exit()
 
     for i, video_idx in enumerate(range(batch_start, batch_end)):
         print(embeddings["vision"][i].shape)
