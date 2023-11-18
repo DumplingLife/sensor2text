@@ -3,8 +3,7 @@ settings = {
     "feature_name": "",
     # "use_emg_embedding": True,
     "use_emg_embedding": False,
-    # "use_imagebind_embedding": True
-    "use_imagebind_embedding": False
+    "use_imagebind_embedding": True
 }
 
 # turning both of these on is weird, probably bug
