@@ -40,7 +40,7 @@ num_layers = 2
 learning_rate = 0.001
 batch_size = 32
 epochs = 20
-num_examples = 230
+num_examples = 255
 
 dataset = ActionSenseDataset('actionsense_data/S00_emg_chunks_preprocessed', 
                              'actionsense_data/S00_imagebind_embeds')
