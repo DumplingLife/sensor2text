@@ -46,7 +46,8 @@ dataset = ActionSenseDataset('actionsense_data/S00_emg_chunks_preprocessed',
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
 model = Model(d_model=d_model, nhead=nhead, num_layers=num_layers)
-loss_function = ContrastiveLoss()
+# loss_function = ContrastiveLoss()
+loss_function = nn.MSELoss()
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
 for epoch in tqdm(range(epochs)):
