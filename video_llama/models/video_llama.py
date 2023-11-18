@@ -373,12 +373,13 @@ class VideoLLAMA(Blip2Base):
 
             # my stuff: sub in saved imagebind embedding
             if settings["use_imagebind_embedding"]:
-                print("specify 8 imagebind embeddings with start/end (e.g. input 80, then 87) (inclusive)")
+                print("specify 8 imagebind embeddings with path, start, end (e.g. input actionsense_data/S00_imagebind_embeds_pred, then 80, then 87) (inclusive)")
+                embeds_path = input()
                 a = int(input())
                 b = int(input())
                 actionsense_embeds = torch.zeros((1,0,1024)).to(device)
                 for i in range(a,b+1):
-                    i_embeds = torch.from_numpy(np.load(f"actionsense_data/S00_imagebind_embeds/{i:03d}.npy").reshape(1, 1, 1024)).to(device)
+                    i_embeds = torch.from_numpy(np.load(f"{embeds_path}/{i:03d}.npy").reshape(1, 1, 1024)).to(device)
                     actionsense_embeds = torch.cat((actionsense_embeds, i_embeds), dim=1)
                 audio_imagebind_finalout = actionsense_embeds
 
