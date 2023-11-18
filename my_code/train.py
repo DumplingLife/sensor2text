@@ -71,6 +71,9 @@ for i, (inputs, targets) in enumerate(DataLoader(dataset, batch_size=1, shuffle=
         outputs[i] = model(inputs)
         targets_list[i] = targets
 
+print(outputs[50])
+print(outputs[100])
+
 mean_output = sum(outputs) / 230
 mean_targets = sum(targets_list) / 230
 squared_error_to_target = 0
