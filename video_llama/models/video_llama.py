@@ -370,6 +370,7 @@ class VideoLLAMA(Blip2Base):
             print("audio_feature size", audio_feature.shape)
             print("audio_imagebind_finalout size", audio_imagebind_finalout.shape)
             print("audio_feature", audio_feature)
+            print("audio_imagebind_finalout", audio_imagebind_finalout)
             # my stuff: sub in saved imagebind embedding
             if settings["use_imagebind_embedding"]:
                 print("input embedding path (e.g. actionsense_data/S00_imagebind_embeds/090.npy):")
