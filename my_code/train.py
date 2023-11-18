@@ -70,8 +70,10 @@ for i, (inputs, targets) in enumerate(DataLoader(dataset, batch_size=1, shuffle=
     with torch.no_grad():
         outputs[i] = model(inputs)
         targets_list[i] = targets
-        print(torch.mean((outputs-targets)**2)) # MSE
 
 mean_output = sum(outputs) / 230
-for output in outputs:
-    print(torch.mean((outputs-output)**2))
+squared_error = 0
+for output, targets in zip(outputs, targets_list):
+    squared_error += torch.mean((output - targets)**2)
+    print(torch.mean((mean_output-output)**2))
+print(squared_error / 230)
