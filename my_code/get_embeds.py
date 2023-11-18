@@ -16,8 +16,8 @@ batch_size = 8
 video_dir = "actionsense_data/videos_processed/2022-06-07_18-11-37_S00_eye-tracking-video-worldGaze_frame"
 
 # Process in batches
-for batch_start in range(230, 255, batch_size):
-    batch_end = min(batch_start + batch_size, 230)
+for batch_start in range(0, 255, batch_size):
+    batch_end = min(batch_start + batch_size, 255)
     print(f"Processing batch: {batch_start} to {batch_end}")
 
     video_paths = [f"{video_dir}/video_{x:03d}.mp4" for x in range(batch_start, batch_end)]
