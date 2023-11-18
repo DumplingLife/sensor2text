@@ -19,7 +19,7 @@ for batch_start in range(0, 230, batch_size):
     print(f"Processing batch: {batch_start} to {batch_end}")
 
     video_dir = "actionsense_data/videos_processed/2022-06-07_18-11-37_S00_eye-tracking-video-worldGaze_frame"
-    video_paths = [f"{video_dir}/video_{x:03d}.avi" for x in range(batch_start, batch_end)]
+    video_paths = [f"{video_dir}/video_{x:03d}.mp4" for x in range(batch_start, batch_end)]
 
     inputs = {
         ModalityType.VISION: data.load_and_transform_video_data(video_paths, device)
