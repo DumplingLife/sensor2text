@@ -269,6 +269,7 @@ class Chat:
                 # audio_emb,_  = self.model.encode_audioQformer(audio)
                 audio_emb,_  = self.model.encode_audioQformer(einops.rearrange(video, 'b c t h w -> b t c h w'), modality_type=ModalityType.VISION) # === my stuff
 
+                # original stuff
                 """
                 img_list.append(audio_emb)
                 img_list.append(image_emb)
@@ -280,6 +281,7 @@ class Chat:
                 Now answer my question based on what you have just seen and heard.")
                 """
 
+                # === my stuff
                 img_list.append(audio_emb)
                 conv.system = ""
                 conv.append_message(conv.roles[0], "Close your eyes, open your ears and you imagine only based on the sound that: <ImageHere>. \
