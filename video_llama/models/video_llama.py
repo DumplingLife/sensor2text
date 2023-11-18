@@ -366,8 +366,16 @@ class VideoLLAMA(Blip2Base):
         device = audio.device
         with self.maybe_autocast():
             audio_feature, audio_imagebind_finalout = self.audio_encoder.get_audio_feature(audio,modality_type=modality_type)
-            print("aduio_feature size", audio_feature.size)
 
+            print("audio_feature size", audio_feature.shape)
+            print("audio_imagebind_finalout size", audio_imagebind_finalout.shape)
+            print("audio_feature", audio_feature)
+            # my stuff: sub in saved imagebind embedding
+            if settings["use_imagebind_embedding"]:
+                print("input embedding path (e.g. actionsense_data/S00_imagebind_embeds/090.npy):")
+                embedding_path = input() # input: 090
+                # TODO: what shape, and which variable (audio_feature or audio_imagebind_finalout)
+                audio_feature = torch.from_numpy(np.load(embedding_path).reshape(1, 1, 1024)).to(device)
             batch_size,time_length = audio.size()[:2]
 
 
