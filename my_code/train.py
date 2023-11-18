@@ -72,8 +72,10 @@ for i, (inputs, targets) in enumerate(DataLoader(dataset, batch_size=1, shuffle=
         targets_list[i] = targets
 
 mean_output = sum(outputs) / 230
-squared_error = 0
+squared_error_to_target = 0
+squared_error_to_mean = 0
 for output, targets in zip(outputs, targets_list):
-    squared_error += torch.mean((output - targets)**2)
-    print(torch.mean((mean_output-output)**2))
-print(squared_error / 230)
+    squared_error_to_target += torch.mean((output - targets)**2)
+    squared_error_to_mean += torch.mean((mean_output-output)**2)
+print(squared_error_to_target / 230)
+print(squared_error_to_mean / 230)
