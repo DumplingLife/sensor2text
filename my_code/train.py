@@ -40,6 +40,7 @@ num_layers = 2
 learning_rate = 0.001
 batch_size = 32
 epochs = 20
+num_examples = 230
 
 dataset = ActionSenseDataset('actionsense_data/S00_emg_chunks_preprocessed', 
                              'actionsense_data/S00_imagebind_embeds')
@@ -63,10 +64,10 @@ for epoch in tqdm(range(epochs)):
 
 print("Training Complete")
 
-# testing stuff
 
-outputs = [None] * 230
-targets_list = [None] * 230
+# testing stuff
+outputs = [None] * num_examples
+targets_list = [None] * num_examples
 for i, (inputs, targets) in enumerate(DataLoader(dataset, batch_size=1, shuffle=True)):
     with torch.no_grad():
         outputs[i] = model(inputs)
@@ -77,8 +78,8 @@ print(outputs[100])
 print(targets_list[50])
 print(targets_list[100])
 
-mean_output = sum(outputs) / 230
-mean_targets = sum(targets_list) / 230
+mean_output = sum(outputs) / num_examples
+mean_targets = sum(targets_list) / num_examples
 squared_error_to_target = 0
 squared_error_to_mean = 0
 targets_squared_error_to_mean = 0
@@ -86,6 +87,10 @@ for output, targets in zip(outputs, targets_list):
     squared_error_to_target += torch.mean((output - targets)**2)
     squared_error_to_mean += torch.mean((mean_output-output)**2)
     targets_squared_error_to_mean += torch.mean((targets-mean_targets)**2)
-print(squared_error_to_target / 230)
-print(squared_error_to_mean / 230)
-print(targets_squared_error_to_mean / 230)
+print(squared_error_to_target / num_examples)
+print(squared_error_to_mean / num_examples)
+print(targets_squared_error_to_mean / num_examples)
+
+# save
+for i in range(num_examples):
+    np.save(f"actionsense_data/S00_imagebind_embeds_pred/{i:03d}.npy", outputs[i])
