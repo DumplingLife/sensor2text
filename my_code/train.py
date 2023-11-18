@@ -73,6 +73,8 @@ for i, (inputs, targets) in enumerate(DataLoader(dataset, batch_size=1, shuffle=
 
 print(outputs[50])
 print(outputs[100])
+print(targets_list[50])
+print(targets_list[100])
 
 mean_output = sum(outputs) / 230
 mean_targets = sum(targets_list) / 230
