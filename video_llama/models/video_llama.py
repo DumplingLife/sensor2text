@@ -366,6 +366,8 @@ class VideoLLAMA(Blip2Base):
         device = audio.device
         with self.maybe_autocast():
             audio_feature, audio_imagebind_finalout = self.audio_encoder.get_audio_feature(audio,modality_type=modality_type)
+            print("aduio_feature size", audio_feature.size)
+
             batch_size,time_length = audio.size()[:2]
 
 
