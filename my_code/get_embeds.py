@@ -21,7 +21,7 @@ for file in os.listdir(video_dir):
         video_count += 1
 
 # Process in batches
-for batch_start in range(230, video_count, batch_size):
+for batch_start in range(0, video_count, batch_size):
     batch_end = min(batch_start + batch_size, video_count)
     print(f"Processing batch: {batch_start} to {batch_end}")
 
