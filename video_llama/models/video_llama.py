@@ -379,7 +379,7 @@ class VideoLLAMA(Blip2Base):
                 actionsense_embeds = torch.zeros((1,0,1024))
                 for i in range(a,b+1):
                     i_embeds = torch.from_numpy(np.load(f"actionsense_data/S00_imagebind_embeds/{i:03d}.npy").reshape(1, 1, 1024)).to(device)
-                    actionsense_embeds = torch.cat(((actionsense_embeds, i_embeds)))
+                    actionsense_embeds = torch.cat((actionsense_embeds, i_embeds), dim=1)
                 audio_imagebind_finalout = actionsense_embeds
 
 
