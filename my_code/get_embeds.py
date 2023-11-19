@@ -16,7 +16,8 @@ batch_size = 16
 
 video_count = 0
 # video_dir = "actionsense_data/videos_processed/2022-06-07_18-11-37_S00_eye-tracking-video-worldGaze_frame"
-video_dir = "actionsense_data/videos_processed_2s/2022-06-07_18-11-37_S00_eye-tracking-video-worldGaze_frame"
+# video_dir = "actionsense_data/videos_processed_2s/2022-06-07_18-11-37_S00_eye-tracking-video-worldGaze_frame"
+video_dir = "actionsense_data/videos_processed_2s/2022-06-13_21-48-24_S02_eye-tracking-video-worldGaze_frame"
 for file in os.listdir(video_dir):
     if file.endswith(".mp4"):
         video_count += 1
@@ -37,5 +38,5 @@ for batch_start in range(0, video_count, batch_size):
 
     for i, video_idx in enumerate(range(batch_start, batch_end)):
         print(embeddings["vision"][i].shape)
-        output_dir = "actionsense_data/S00_imagebind_embeds_2s"
+        output_dir = "actionsense_data/S02_1_imagebind_embeds_2s"
         np.save(f"{output_dir}/{video_idx:03d}.npy", embeddings["vision"][i].cpu().numpy())
