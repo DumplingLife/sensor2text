@@ -42,8 +42,8 @@ batch_size = 32
 epochs = 20
 num_examples = 255
 
-dataset = ActionSenseDataset('actionsense_data/S00_emg_chunks_preprocessed', 
-                             'actionsense_data/S00_imagebind_embeds')
+dataset = ActionSenseDataset('actionsense_data/S00_emg_chunks_preprocessed_2s', 
+                             'actionsense_data/S00_imagebind_embeds_2s')
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
 model = Model(d_model=d_model, nhead=nhead, num_layers=num_layers)
@@ -93,4 +93,4 @@ print(targets_squared_error_to_mean / num_examples)
 
 # save
 for i in range(num_examples):
-    np.save(f"actionsense_data/S00_imagebind_embeds_pred/{i:03d}.npy", outputs[i])
+    np.save(f"actionsense_data/S00_imagebind_embeds_pred_2s/{i:03d}.npy", outputs[i])
