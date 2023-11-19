@@ -107,4 +107,4 @@ print(targets_squared_error_to_mean / len(dataset))
 
 
 for i in range(len(dataset)):
-    np.save(f"actionsense_data/imagebind_preds_2s/{output_paths[i]}.npy", outputs[i])
+    np.save(f"actionsense_data/imagebind_preds_2s/{output_paths[i]}", outputs[i])
