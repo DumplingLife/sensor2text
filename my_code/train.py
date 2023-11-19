@@ -40,7 +40,9 @@ num_layers = 2
 learning_rate = 0.001
 batch_size = 32
 epochs = 20
-num_examples = 255
+
+# important
+num_examples = 544
 
 dataset = ActionSenseDataset('actionsense_data/S00_emg_chunks_2s', 
                              'actionsense_data/S00_imagebind_embeds_2s')
@@ -52,7 +54,8 @@ loss_function = nn.MSELoss()
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
 for epoch in tqdm(range(epochs)):
-    for i, (inputs, targets) in enumerate(dataloader):
+    for i in range(num_examples):
+        inputs, targets = dataloader[i]
         optimizer.zero_grad()
         outputs = model(inputs)
         loss = loss_function(outputs, targets)
