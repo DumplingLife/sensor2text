@@ -39,7 +39,7 @@ nhead = 4
 num_layers = 2
 learning_rate = 0.001
 batch_size = 32
-epochs = 50
+epochs = 80
 
 # important
 num_examples = 544
