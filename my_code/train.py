@@ -85,7 +85,7 @@ for i, (inputs, targets, filepath) in enumerate(DataLoader(dataset, batch_size=1
     with torch.no_grad():
         outputs[i] = model(inputs)
         targets_list[i] = targets
-        output_paths[i] = filepath
+        output_paths[i] = filepath[0]
 
 print(outputs[50])
 print(outputs[100])
