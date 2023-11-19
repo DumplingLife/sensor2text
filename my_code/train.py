@@ -18,7 +18,7 @@ class ActionSenseDataset(Dataset):
         # data and targets might not match: directories might not match, and # files in each might not match
         common_subdirs = set(os.listdir(data_dir)) & set(os.listdir(target_dir))
         for subdir in common_subdirs:
-            common_files = set(os.listdir(f"{data_dir}/{subdir}") & set(os.listdir(f"{target_dir}/{subdir}")))
+            common_files = set(os.listdir(f"{data_dir}/{subdir}")) & set(os.listdir(f"{target_dir}/{subdir}"))
             print(f"found {len(common_files)} files from {subdir}")
             for file in common_files:
                 self.data_files.append(f"{data_dir}/{subdir}/{file}")
