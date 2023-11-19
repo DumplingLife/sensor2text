@@ -9,7 +9,7 @@ import os
 from tqdm import tqdm
 
 class ActionSenseDataset(Dataset):
-    def __init__(self, data_dir, target_dir):
+    def __init__(self):
         data_dir = "actionsense_data/emg_2s"
         target_dir = "actionsense_data/imagebind_targets_2s"
         self.data_files = []
