@@ -15,7 +15,8 @@ model.to(device)
 batch_size = 8
 
 video_count = 0
-video_dir = "actionsense_data/videos_processed/2022-06-07_18-11-37_S00_eye-tracking-video-worldGaze_frame"
+# video_dir = "actionsense_data/videos_processed/2022-06-07_18-11-37_S00_eye-tracking-video-worldGaze_frame"
+video_dir = "actionsense_data/videos_processed_2s/2022-06-07_18-11-37_S00_eye-tracking-video-worldGaze_frame"
 for file in os.listdir(video_dir):
     if file.endswith(".mp4"):
         video_count += 1
