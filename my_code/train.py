@@ -42,7 +42,7 @@ batch_size = 32
 epochs = 20
 num_examples = 255
 
-dataset = ActionSenseDataset('actionsense_data/S00_emg_chunks_preprocessed_2s', 
+dataset = ActionSenseDataset('actionsense_data/S00_emg_chunks_2s', 
                              'actionsense_data/S00_imagebind_embeds_2s')
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
