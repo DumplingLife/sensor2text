@@ -10,8 +10,8 @@ from tqdm import tqdm
 
 class ActionSenseDataset(Dataset):
     def __init__(self, data_dir, target_dir):
-        self.data_files = [f"{data_dir}/emg_{i:03d}.npy" for i in range(len(os.listdir(data_dir)))]
-        self.target_files = [f"{target_dir}/{i:03d}.npy" for i in range(len(os.listdir(target_dir)))]
+        self.data_files = [f"{data_dir}/emg_{i:03d}.npy" for i in range(num_examples)]
+        self.target_files = [f"{target_dir}/{i:03d}.npy" for i in range(num_examples)]
 
     def __len__(self):
         return len(self.data_files)
@@ -54,8 +54,7 @@ loss_function = nn.MSELoss()
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
 for epoch in tqdm(range(epochs)):
-    for i in range(num_examples):
-        inputs, targets = dataloader[i]
+    for i, (inputs, targets) in enumerate(dataloader):
         optimizer.zero_grad()
         outputs = model(inputs)
         loss = loss_function(outputs, targets)
