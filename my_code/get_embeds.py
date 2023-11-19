@@ -12,7 +12,7 @@ model.load_state_dict(torch.load("../Video-LLaMA-2-7B-Finetuned/imagebind_huge.p
 model.to(device)
 
 # Define batch size
-batch_size = 8
+batch_size = 16
 
 video_count = 0
 # video_dir = "actionsense_data/videos_processed/2022-06-07_18-11-37_S00_eye-tracking-video-worldGaze_frame"
