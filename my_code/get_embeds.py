@@ -37,4 +37,5 @@ for batch_start in range(0, video_count, batch_size):
 
     for i, video_idx in enumerate(range(batch_start, batch_end)):
         print(embeddings["vision"][i].shape)
-        np.save(f"actionsense_data/S00_imagebind_embeds/{video_idx:03d}.npy", embeddings["vision"][i].cpu().numpy())
+        output_dir = "actionsense_data/S00_imagebind_embeds_2s"
+        np.save(f"{output_dir}/{video_idx:03d}.npy", embeddings["vision"][i].cpu().numpy())
