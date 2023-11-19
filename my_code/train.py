@@ -10,8 +10,19 @@ from tqdm import tqdm
 
 class ActionSenseDataset(Dataset):
     def __init__(self, data_dir, target_dir):
-        self.data_files = [f"{data_dir}/emg_{i:03d}.npy" for i in range(num_examples)]
-        self.target_files = [f"{target_dir}/{i:03d}.npy" for i in range(num_examples)]
+        data_dir = "actionsense_data/emg_2s"
+        target_dir = "actionsense_data/imagebind_targets_2s"
+        self.data_files = []
+        self.target_files = []
+
+        # data and targets might not match: directories might not match, and # files in each might not match
+        common_subdirs = set(os.listdir(data_dir)) & set(os.listdir(target_dir))
+        for subdir in common_subdirs:
+            common_files = set(os.listdir(f"{data_dir}/{subdir}") & set(os.listdir(f"{target_dir}/{subdir}")))
+            print(f"found {len(common_files)} files from {subdir}")
+            for file in common_files:
+                self.data_files.append(f"{data_dir}/{subdir}/{file}")
+                self.target_files.append(f"{target_dir}/{subdir}/{file}")
 
     def __len__(self):
         return len(self.data_files)
@@ -41,11 +52,8 @@ learning_rate = 0.001
 batch_size = 32
 epochs = 80
 
-# important
-num_examples = 544
-
-dataset = ActionSenseDataset('actionsense_data/S00_emg_chunks_2s', 
-                             'actionsense_data/S00_imagebind_embeds_2s')
+dataset = ActionSenseDataset()
+print("len(dataset):", len(dataset))
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
 model = Model(d_model=d_model, nhead=nhead, num_layers=num_layers)
@@ -68,8 +76,8 @@ print("Training Complete")
 
 
 # testing stuff
-outputs = [None] * num_examples
-targets_list = [None] * num_examples
+outputs = [None] * len(dataset)
+targets_list = [None] * len(dataset)
 for i, (inputs, targets) in enumerate(DataLoader(dataset, batch_size=1, shuffle=True)):
     with torch.no_grad():
         outputs[i] = model(inputs)
@@ -80,8 +88,8 @@ print(outputs[100])
 print(targets_list[50])
 print(targets_list[100])
 
-mean_output = sum(outputs) / num_examples
-mean_targets = sum(targets_list) / num_examples
+mean_output = sum(outputs) / len(dataset)
+mean_targets = sum(targets_list) / len(dataset)
 squared_error_to_target = 0
 squared_error_to_mean = 0
 targets_squared_error_to_mean = 0
@@ -89,10 +97,12 @@ for output, targets in zip(outputs, targets_list):
     squared_error_to_target += torch.mean((output - targets)**2)
     squared_error_to_mean += torch.mean((mean_output-output)**2)
     targets_squared_error_to_mean += torch.mean((targets-mean_targets)**2)
-print(squared_error_to_target / num_examples)
-print(squared_error_to_mean / num_examples)
-print(targets_squared_error_to_mean / num_examples)
+print(squared_error_to_target / len(dataset))
+print(squared_error_to_mean / len(dataset))
+print(targets_squared_error_to_mean / len(dataset))
 
+"""
 # save
-for i in range(num_examples):
+for i in range(len(dataset)):
     np.save(f"actionsense_data/S00_imagebind_embeds_pred_2s/{i:03d}.npy", outputs[i])
+"""
