@@ -62,12 +62,11 @@ class AllSensorsModel(nn.Module):
             modality: nn.TransformerEncoder(nn.TransformerEncoderLayer(d_models[modality], nhead, dropout=dropout), num_layers=num_layers)
             for modality in self.input_sizes.keys()
         })
-        # self.output_projection = nn.Linear(sum(d_models.values()), 1024)
-        self.output_projection = nn.Sequential(
-            nn.Linear(sum(d_models.values()), 2048),
-            nn.ReLU(),
-            nn.Linear(2048, 1024)
-        )
+        self.output_projection = nn.Linear(sum(d_models.values()), 1024)
+
+        # trying something weird: classification + regression
+        self.output_classifier = nn.Linear(sum(d_models.values()), 20)
+        self.classes = nn.Parameter(torch.randn(1, 20, 1024))
         
 
     def forward(self, x):
@@ -83,4 +82,5 @@ class AllSensorsModel(nn.Module):
 
             start = end
         concatenated = torch.cat(encoded_modalities, dim=1)
-        return self.output_projection(concatenated)
+        # return self.output_projection(concatenated)
+        return self.classes * nn.Softmax(self.output_classifier(concatenated))
