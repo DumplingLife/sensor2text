@@ -45,20 +45,20 @@ class Model(nn.Module):
 class AllSensorsModel(nn.Module):
     def __init__(self, d_model=256, nhead=8, num_layers=8, dropout=0.1):
         super().__init__()
-        input_sizes = {'eye': 2, 'emg': 16, 'tactile': 32, 'body': 66}
+        self.input_sizes = {'eye': 2, 'emg': 16, 'tactile': 32, 'body': 66}
         self.input_projections = nn.ModuleDict({
             modality: nn.Linear(size, d_model) 
-            for modality, size in input_sizes.items()
+            for modality, size in self.input_sizes.items()
         })
         self.pos_encoders = nn.ModuleDict({
             modality: PositionalEncoding(d_model, dropout) 
-            for modality in input_sizes.keys()
+            for modality in self.input_sizes.keys()
         })
         self.encoders = nn.ModuleDict({
             modality: nn.TransformerEncoder(nn.TransformerEncoderLayer(d_model, nhead, dropout=dropout), num_layers=num_layers)
-            for modality in input_sizes.keys()
+            for modality in self.input_sizes.keys()
         })
-        self.output_projection = nn.Linear(d_model * len(input_sizes), 1024)
+        self.output_projection = nn.Linear(d_model * len(self.input_sizes), 1024)
 
     def forward(self, x):
         start = 0
