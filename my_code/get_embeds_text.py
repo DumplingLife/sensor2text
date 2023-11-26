@@ -20,6 +20,9 @@ with h5py.File("actionsense_data/text/S00_2s_withlabel.hdf5", 'r') as hdf_file:
     for idx, label in enumerate(all_example_labels):
         if label: # if label isn't empty
             example_labels.append((idx, label.decode('utf-8')))
+    
+    # test unkonwn word
+    example_labels[0] = "qwer asdf qugqhep"
 
 print("example_labels[0:5],", example_labels[0:5])
 
@@ -38,5 +41,5 @@ for batch_start in range(0, len(example_labels), batch_size):
 
     for i, example_labels_idx in enumerate(range(batch_start, batch_end)):
         print(embeddings["text"][i].shape)
-        output_dir = "actionsense_data/imagebind_targets_text_2s/S00"
+        output_dir = "actionsense_data/imagebind_targets_text_2s/S00_test"
         np.save(f"{output_dir}/{example_labels[example_labels_idx][0]:03d}.npy", embeddings["text"][i].cpu().numpy())
