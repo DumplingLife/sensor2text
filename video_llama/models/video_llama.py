@@ -373,7 +373,7 @@ class VideoLLAMA(Blip2Base):
 
             # my stuff: sub in saved imagebind embedding
             if settings["use_imagebind_embedding"]:
-                print("specify 8 imagebind embeddings with path, start, end (e.g. input actionsense_data/S00_imagebind_embeds_pred, then 80, then 87) (inclusive)")
+                print("specify 8 imagebind embeddings with path, start, end (e.g. input actionsense_data/imagebind_preds_2s/S00, then 80, then 87) (inclusive)")
                 embeds_path = input()
                 a = int(input())
                 b = int(input())
