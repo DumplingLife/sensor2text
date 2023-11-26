@@ -25,7 +25,7 @@ DEFAULT_AUDIO_FRAME_SHIFT_MS = 10  # in milliseconds
 # making BPE_PATH relative
 import os
 BPE_PATH = "bpe/bpe_simple_vocab_16e6.txt.gz"
-os.path.join(os.path.dirname(os.path.realpath(__file__)), BPE_PATH)
+BPE_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), BPE_PATH)
 
 
 def waveform2melspec(waveform, sample_rate, num_mel_bins, target_length):
