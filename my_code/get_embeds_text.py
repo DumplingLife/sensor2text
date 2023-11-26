@@ -18,7 +18,7 @@ with h5py.File("actionsense_data/text/S00_2s_withlabel.hdf5", 'r') as hdf_file:
     all_example_labels = hdf_file["example_labels"]
     example_labels = []
     for idx, label in enumerate(all_example_labels):
-        if label != "":
+        if label: # if label isn't empty
             example_labels.append((idx, label))
 
 print(example_labels)
