@@ -57,6 +57,14 @@ dataset = ActionSenseDataset()
 print("len(dataset):", len(dataset))
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
+# print
+for i, (inputs, targets, _) in enumerate(dataloader):
+    print(inputs)
+    print(targets)
+    print(inputs.shape)
+    print(targets.shape)
+    break
+
 model = Model()
 # loss_function = ContrastiveLoss()
 loss_function = nn.MSELoss()
