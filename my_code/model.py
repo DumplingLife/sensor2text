@@ -67,7 +67,7 @@ class AllSensorsModel(nn.Module):
         # trying something weird: classification + regression
         self.num_classes = 15
         self.output_classifier = nn.Linear(sum(d_models.values()), self.num_classes)
-        self.softmax = nn.Softmax()
+        self.softmax = nn.Softmax(dim=1)
         self.classes = nn.Parameter(torch.randn(1, self.num_classes, 1024))
         
 
@@ -85,5 +85,5 @@ class AllSensorsModel(nn.Module):
             start = end
         concatenated = torch.cat(encoded_modalities, dim=1)
         # return self.output_projection(concatenated)
-        
+
         return torch.mean(self.classes * self.softmax(self.output_classifier(concatenated)).unsqueeze(-1), dim=1)
