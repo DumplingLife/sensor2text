@@ -23,7 +23,7 @@ class PositionalEncoding(nn.Module):
         return self.dropout(x)
 
 class Model(nn.Module):
-    def __init__(self, d_model=256, nhead=8, num_layers=8, dropout=0.0):
+    def __init__(self, d_model=256, nhead=8, num_layers=8, dropout=0.1):
         super().__init__()
         self.input_size = 16
         self.cls_token = nn.Parameter(torch.randn(1, 1, self.input_size))
@@ -41,3 +41,31 @@ class Model(nn.Module):
         x = self.encoder(x)
         cls_token_output = x[:, 0, :]
         return self.output_projection(cls_token_output)
+
+class AllSensorsModel(nn.Module):
+    def __init__(self, d_model=256, nhead=8, num_layers=8, dropout=0.1):
+        super().__init__()
+        input_sizes = {'eye': 2, 'emg': 16, 'tactile': 32, 'body': 66}
+        self.input_projections = nn.ModuleDict({
+            modality: nn.Linear(size, d_model) 
+            for modality, size in input_sizes.items()
+        })
+        self.pos_encoders = nn.ModuleDict({
+            modality: PositionalEncoding(d_model, dropout) 
+            for modality in input_sizes.keys()
+        })
+        self.encoders = nn.ModuleDict({
+            modality: nn.TransformerEncoder(nn.TransformerEncoderLayer(d_model, nhead, dropout=dropout), num_layers=num_layers)
+            for modality in input_sizes.keys()
+        })
+        self.output_projection = nn.Linear(d_model * len(input_sizes), 1024)
+
+    def forward(self, inputs):
+        encoded_modalities = []
+        for name, modality in inputs.items():
+            projection = self.input_projections[name](modality)
+            encoding = self.pos_encoders[name](projection)
+            encoded = self.encoders[name](encoding)
+            encoded_modalities.append(encoded[:, 0, :])
+        concatenated = torch.cat(encoded_modalities, dim=1)
+        return self.output_projection(concatenated)
