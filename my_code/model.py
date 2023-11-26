@@ -25,17 +25,18 @@ class PositionalEncoding(nn.Module):
 class Model(nn.Module):
     def __init__(self, d_model=256, nhead=8, num_layers=8, dropout=0.1):
         super().__init__()
-        self.cls_token = nn.Parameter(torch.randn(1, 1, d_model))
-        self.input_projection = nn.Linear(16, d_model)
+        self.input_size = 16
+        self.cls_token = nn.Parameter(torch.randn(1, 1, self.input_size))
+        self.input_projection = nn.Linear(self.input_size, d_model)
         self.pos_encoder = PositionalEncoding(d_model, dropout)
         self.encoder_layer = nn.TransformerEncoderLayer(d_model, nhead, dropout=dropout)
         self.encoder = nn.TransformerEncoder(self.encoder_layer, num_layers=num_layers)
         self.output_projection = nn.Linear(d_model, 1024)
 
     def forward(self, x):
-        x = self.input_projection(x)
         cls_tokens = self.cls_token.expand(x.size(0), -1, -1)
         x = torch.cat((cls_tokens, x), dim=1)
+        x = self.input_projection(x)
         x = self.pos_encoder(x)
         x = self.encoder(x)
         cls_token_output = x[:, 0, :]
