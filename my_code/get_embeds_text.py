@@ -23,6 +23,7 @@ with h5py.File("actionsense_data/text/S00_2s_withlabel.hdf5", 'r') as hdf_file:
     
     # test unkonwn word
     example_labels[20] = (example_labels[20][0], "qwer asdf qugqhep")
+    print(example_labels[20][0])
 
 print("example_labels[0:5],", example_labels[0:5])
 
