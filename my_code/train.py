@@ -23,8 +23,8 @@ class ContrastiveLoss(nn.Module):
         return loss
 
 
-learning_rate = 0.0003
-batch_size = 32
+learning_rate = 0.001
+batch_size = 16
 epochs = 30
 
 dataset = ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_text_2s")
