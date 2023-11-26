@@ -46,7 +46,7 @@ class AllSensorsModel(nn.Module):
     def __init__(self):
         super().__init__()
         self.input_sizes = {'eye': 2, 'emg': 16, 'tactile': 32, 'body': 66}
-        d_models = {'eye': 16, 'emg': 64, 'tactile': 128, 'body': 256}
+        d_models = {'eye': 16, 'emg': 64, 'tactile': 128, 'body': 128}
         nhead=8
         num_layers=8
         dropout=0.1
