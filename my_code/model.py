@@ -1,3 +1,8 @@
+"""
+Model and AllSensorsModel are their own models (i.e. its not one builds off another)
+I put both here for organization
+"""
+
 import torch
 import torch.nn as nn
 
@@ -18,7 +23,7 @@ class PositionalEncoding(nn.Module):
         return self.dropout(x)
 
 class Model(nn.Module):
-    def __init__(self, d_model, nhead, num_layers, dropout=0.1):
+    def __init__(self, d_model=32, nhead=4, num_layers=2, dropout=0.1):
         super().__init__()
         self.cls_token = nn.Parameter(torch.randn(1, 1, d_model))
         self.pos_encoder = PositionalEncoding(d_model, dropout)
