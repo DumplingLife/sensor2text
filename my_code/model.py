@@ -51,15 +51,15 @@ class AllSensorsModel(nn.Module):
         num_layers=12
         dropout=0.1
         self.input_projections = nn.ModuleDict({
-            modality: nn.Linear(input_size, self.d_models[modality]) 
+            modality: nn.Linear(input_size, d_models[modality]) 
             for modality, input_size in self.input_sizes.items()
         })
         self.pos_encoders = nn.ModuleDict({
-            modality: PositionalEncoding(self.d_models[modality], dropout) 
+            modality: PositionalEncoding(d_models[modality], dropout) 
             for modality in self.input_sizes.keys()
         })
         self.encoders = nn.ModuleDict({
-            modality: nn.TransformerEncoder(nn.TransformerEncoderLayer(self.d_models[modality], nhead, dropout=dropout), num_layers=num_layers)
+            modality: nn.TransformerEncoder(nn.TransformerEncoderLayer(d_models[modality], nhead, dropout=dropout), num_layers=num_layers)
             for modality in self.input_sizes.keys()
         })
         self.output_projection = nn.Linear(sum(d_models.values()), 1024)
