@@ -23,7 +23,7 @@ class PositionalEncoding(nn.Module):
         return self.dropout(x)
 
 class Model(nn.Module):
-    def __init__(self, d_model=32, nhead=4, num_layers=2, dropout=0.1):
+    def __init__(self, d_model=16, nhead=4, num_layers=2, dropout=0.1):
         super().__init__()
         self.cls_token = nn.Parameter(torch.randn(1, 1, d_model))
         self.pos_encoder = PositionalEncoding(d_model, dropout)
