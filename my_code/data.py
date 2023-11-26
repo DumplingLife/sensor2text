@@ -2,6 +2,7 @@ import torch
 import numpy as np
 from torch.utils.data import Dataset
 import os
+import random
 
 class ActionsenseDataset(Dataset):
     def __init__(self, data_dir, target_dir):
@@ -18,6 +19,9 @@ class ActionsenseDataset(Dataset):
                 self.data_files.append(f"{data_dir}/{subdir}/{file}")
                 self.target_files.append(f"{target_dir}/{subdir}/{file}")
                 self.filepaths.append(f"{subdir}/{file}")
+        
+        # test: shuffle array to screw it up
+        random.shuffle(self.data_files)
 
     def __len__(self):
         return len(self.data_files)
