@@ -5,7 +5,7 @@ import torch.optim as optim
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from tqdm import tqdm
-from my_code.model import Model
+from my_code.model import Model, AllSensorsModel
 from my_code.data import ActionsenseDataset
 
 
@@ -27,7 +27,7 @@ learning_rate = 0.0003
 batch_size = 32
 epochs = 30
 
-dataset = ActionsenseDataset()
+dataset = ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_text_2s")
 print("len(dataset):", len(dataset))
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
@@ -39,7 +39,9 @@ for i, (inputs, targets, _) in enumerate(dataloader):
     print(targets.shape)
     break
 
-model = Model()
+# model = Model()
+model = AllSensorsModel()
+
 # loss_function = ContrastiveLoss()
 loss_function = nn.MSELoss()
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)

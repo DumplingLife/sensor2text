@@ -4,9 +4,7 @@ from torch.utils.data import Dataset
 import os
 
 class ActionsenseDataset(Dataset):
-    def __init__(self):
-        data_dir = "actionsense_data/emg_2s"
-        target_dir = "actionsense_data/imagebind_targets_text_2s"
+    def __init__(self, data_dir, target_dir):
         self.data_files = []
         self.target_files = []
         self.filepaths = []
