@@ -38,5 +38,5 @@ for batch_start in range(0, len(example_labels), batch_size):
 
     for i, example_labels_idx in enumerate(range(batch_start, batch_end)):
         print(embeddings["text"][i].shape)
-        output_dir = "actionsense_data/S00_imagebind_embeds_text_2s"
+        output_dir = "actionsense_data/imagebind_targets_text_2s/S00_imagebind_embeds_text_2s"
         np.save(f"{output_dir}/{example_labels[example_labels_idx][0]:03d}.npy", embeddings["text"][i].cpu().numpy())
