@@ -85,5 +85,5 @@ class AllSensorsModel(nn.Module):
         concatenated = torch.cat(encoded_modalities, dim=1)
         # return self.output_projection(concatenated)
         print(self.softmax(self.output_classifier(concatenated)).unsqueeze(-1).shape)
-        print(self.classes.shape)
-        return self.classes * self.softmax(self.output_classifier(concatenated)).unsqueeze(-1)
+        print(self.classes.expand(x.size(0), -1, -1).shape)
+        return self.classes.expand(x.size(0), -1, -1) * self.softmax(self.output_classifier(concatenated)).unsqueeze(-1)
