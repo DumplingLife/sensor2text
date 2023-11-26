@@ -70,10 +70,7 @@ for epoch in tqdm(range(epochs)):
         loss.backward()
         optimizer.step()
 
-        if i % 10 == 0:
-            print(f"Epoch [{epoch+1}/{epochs}], Step [{i+1}/{len(dataloader)}], Loss: {loss.item()}")
-
-print("Training Complete")
+    print(f"Epoch [{epoch+1}/{epochs}], Loss: {loss.item()}")
 
 
 # testing stuff
