@@ -60,12 +60,17 @@ class AllSensorsModel(nn.Module):
         })
         self.output_projection = nn.Linear(d_model * len(input_sizes), 1024)
 
-    def forward(self, inputs):
+    def forward(self, x):
+        start = 0
         encoded_modalities = []
-        for name, modality in inputs.items():
-            projection = self.input_projections[name](modality)
-            encoding = self.pos_encoders[name](projection)
-            encoded = self.encoders[name](encoding)
+        for modality, size in self.input_sizes.items():
+            end = start + size
+            modality_input = x[:, start:end]
+            projection = self.input_projections[modality](modality_input)
+            encoding = self.pos_encoders[modality](projection)
+            encoded = self.encoders[modality](encoding)
             encoded_modalities.append(encoded[:, 0, :])
+
+            start = end
         concatenated = torch.cat(encoded_modalities, dim=1)
         return self.output_projection(concatenated)
