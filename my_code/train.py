@@ -47,9 +47,7 @@ class ContrastiveLoss(nn.Module):
         loss = F.cross_entropy(similarity, labels)
         return loss
 
-d_model = 16
-nhead = 4
-num_layers = 2
+
 learning_rate = 0.001
 batch_size = 32
 epochs = 30
@@ -58,7 +56,7 @@ dataset = ActionSenseDataset()
 print("len(dataset):", len(dataset))
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
-model = Model(d_model=d_model, nhead=nhead, num_layers=num_layers)
+model = Model()
 # loss_function = ContrastiveLoss()
 loss_function = nn.MSELoss()
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
@@ -83,8 +81,8 @@ targets_list = [None] * len(dataset)
 output_paths = [None] * len(dataset)
 for i, (inputs, targets, filepath) in enumerate(DataLoader(dataset, batch_size=1, shuffle=True)):
     with torch.no_grad():
-        outputs[i] = model(inputs)
-        targets_list[i] = targets
+        outputs[i] = model(inputs)[0]
+        targets_list[i] = targets[0]
         output_paths[i] = filepath[0]
 
 print(outputs[50])
