@@ -3,37 +3,11 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
-from torch.utils.data import Dataset, DataLoader
-from my_code.model import Model
-import os
+from torch.utils.data import DataLoader
 from tqdm import tqdm
+from my_code.model import Model
+from my_code.data import ActionsenseDataset
 
-class ActionSenseDataset(Dataset):
-    def __init__(self):
-        data_dir = "actionsense_data/emg_2s"
-        # target_dir = "actionsense_data/imagebind_targets_2s"
-        target_dir = "actionsense_data/imagebind_targets_text_2s"
-        self.data_files = []
-        self.target_files = []
-        self.filepaths = []
-
-        # data and targets might not match: directories might not match, and # files in each might not match
-        common_subdirs = set(os.listdir(data_dir)) & set(os.listdir(target_dir))
-        for subdir in common_subdirs:
-            common_files = set(os.listdir(f"{data_dir}/{subdir}")) & set(os.listdir(f"{target_dir}/{subdir}"))
-            print(f"found {len(common_files)} files from {subdir}")
-            for file in common_files:
-                self.data_files.append(f"{data_dir}/{subdir}/{file}")
-                self.target_files.append(f"{target_dir}/{subdir}/{file}")
-                self.filepaths.append(f"{subdir}/{file}")
-
-    def __len__(self):
-        return len(self.data_files)
-
-    def __getitem__(self, idx):
-        data = np.load(self.data_files[idx])
-        target = np.load(self.target_files[idx])
-        return torch.from_numpy(data).float(), torch.from_numpy(target).float(), self.filepaths[idx]
 
 class ContrastiveLoss(nn.Module):
     def __init__(self, temperature=0.07):
@@ -53,7 +27,7 @@ learning_rate = 0.0003
 batch_size = 32
 epochs = 30
 
-dataset = ActionSenseDataset()
+dataset = ActionsenseDataset()
 print("len(dataset):", len(dataset))
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
