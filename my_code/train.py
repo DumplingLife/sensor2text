@@ -11,7 +11,8 @@ from tqdm import tqdm
 class ActionSenseDataset(Dataset):
     def __init__(self):
         data_dir = "actionsense_data/emg_2s"
-        target_dir = "actionsense_data/imagebind_targets_2s"
+        # target_dir = "actionsense_data/imagebind_targets_2s"
+        target_dir = "actionsense_data/imagebind_targets_text_2s"
         self.data_files = []
         self.target_files = []
         self.filepaths = []
