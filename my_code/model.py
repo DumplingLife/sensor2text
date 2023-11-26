@@ -43,22 +43,26 @@ class Model(nn.Module):
         return self.output_projection(cls_token_output)
 
 class AllSensorsModel(nn.Module):
-    def __init__(self, d_model=128, nhead=4, num_layers=6, dropout=0.1):
+    def __init__(self):
         super().__init__()
         self.input_sizes = {'eye': 2, 'emg': 16, 'tactile': 32, 'body': 66}
+        d_models = {'eye': 32, 'emg': 128, 'tactile': 256, 'body': 256}
+        nhead=8
+        num_layers=12
+        dropout=0.1
         self.input_projections = nn.ModuleDict({
-            modality: nn.Linear(size, d_model) 
-            for modality, size in self.input_sizes.items()
+            modality: nn.Linear(input_size, self.d_models[modality]) 
+            for modality, input_size in self.input_sizes.items()
         })
         self.pos_encoders = nn.ModuleDict({
-            modality: PositionalEncoding(d_model, dropout) 
+            modality: PositionalEncoding(self.d_models[modality], dropout) 
             for modality in self.input_sizes.keys()
         })
         self.encoders = nn.ModuleDict({
-            modality: nn.TransformerEncoder(nn.TransformerEncoderLayer(d_model, nhead, dropout=dropout), num_layers=num_layers)
+            modality: nn.TransformerEncoder(nn.TransformerEncoderLayer(self.d_models[modality], nhead, dropout=dropout), num_layers=num_layers)
             for modality in self.input_sizes.keys()
         })
-        self.output_projection = nn.Linear(d_model * len(self.input_sizes), 1024)
+        self.output_projection = nn.Linear(sum(d_models.values()), 1024)
 
     def forward(self, x):
         start = 0
