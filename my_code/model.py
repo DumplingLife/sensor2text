@@ -65,9 +65,10 @@ class AllSensorsModel(nn.Module):
         self.output_projection = nn.Linear(sum(d_models.values()), 1024)
 
         # trying something weird: classification + regression
-        self.output_classifier = nn.Linear(sum(d_models.values()), 20)
+        self.num_classes = 15
+        self.output_classifier = nn.Linear(sum(d_models.values()), self.num_classes)
         self.softmax = nn.Softmax()
-        self.classes = nn.Parameter(torch.randn(1, 20, 1024))
+        self.classes = nn.Parameter(torch.randn(1, self.num_classes, 1024))
         
 
     def forward(self, x):
@@ -86,4 +87,4 @@ class AllSensorsModel(nn.Module):
         # return self.output_projection(concatenated)
         print(self.softmax(self.output_classifier(concatenated)).unsqueeze(-1).shape)
         print(self.classes.expand(x.size(0), -1, -1).shape)
-        return self.classes.expand(x.size(0), -1, -1) * self.softmax(self.output_classifier(concatenated)).unsqueeze(-1)
+        return torch.mean(self.classes * self.softmax(self.output_classifier(concatenated)).unsqueeze(-1), dim=1)
