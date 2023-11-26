@@ -61,6 +61,7 @@ class AllSensorsModel(nn.Module):
         self.output_projection = nn.Linear(d_model * len(self.input_sizes), 1024)
 
     def forward(self, x):
+        print(x.shape)
         start = 0
         encoded_modalities = []
         for modality, size in self.input_sizes.items():
