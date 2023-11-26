@@ -43,7 +43,7 @@ class Model(nn.Module):
         return self.output_projection(cls_token_output)
 
 class AllSensorsModel(nn.Module):
-    def __init__(self, d_model=256, nhead=8, num_layers=8, dropout=0.1):
+    def __init__(self, d_model=128, nhead=4, num_layers=6, dropout=0.1):
         super().__init__()
         self.input_sizes = {'eye': 2, 'emg': 16, 'tactile': 32, 'body': 66}
         self.input_projections = nn.ModuleDict({
