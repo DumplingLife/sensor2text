@@ -29,7 +29,7 @@ for batch_start in range(0, len(example_labels), batch_size):
     inputs = {
         ModalityType.TEXT: data.load_and_transform_text([example_labels[i][1] for i in range(batch_start, batch_end)], device),
     }
-    print(inputs.shape)
+    print(inputs[ModalityType.TEXT].shape)
 
     with torch.no_grad():
         embeddings = model(inputs)
