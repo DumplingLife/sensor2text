@@ -48,7 +48,7 @@ class AllSensorsModel(nn.Module):
         self.input_sizes = {'eye': 2, 'emg': 16, 'tactile': 32, 'body': 66}
         d_models = {'eye': 16, 'emg': 64, 'tactile': 64, 'body': 64}
         nhead=4
-        num_layers=6
+        num_layers=4
         dropout=0.1
         self.input_projections = nn.ModuleDict({
             modality: nn.Linear(input_size, d_models[modality]) 
@@ -63,6 +63,7 @@ class AllSensorsModel(nn.Module):
             for modality in self.input_sizes.keys()
         })
         self.output_projection = nn.Linear(sum(d_models.values()), 1024)
+        self.output_encoder = nn.TransformerEncoder(nn.TransformerEncoderLayer(128, 4, dropout=dropout), num_layers=4)
 
     def forward(self, x):
         start = 0
@@ -73,8 +74,9 @@ class AllSensorsModel(nn.Module):
             projection = self.input_projections[modality](modality_input)
             encoding = self.pos_encoders[modality](projection)
             encoded = self.encoders[modality](encoding)
-            encoded_modalities.append(encoded[:, 0, :])
-
+            # encoded_modalities.append(encoded[:, 0, :])
+            encoded_modalities.append(encoded)
             start = end
-        concatenated = torch.cat(encoded_modalities, dim=1)
-        return self.output_projection(concatenated)
+        # concatenated = torch.cat(encoded_modalities, dim=1)
+        concatenated = torch.cat(encoded_modalities, dim=2)
+        return self.output_projection(self.output_encoder(concatenated))
