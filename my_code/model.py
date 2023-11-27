@@ -82,4 +82,4 @@ class AllSensorsModel(nn.Module):
             encoded_modalities.append(encoded[:, 0, :])
             start = end
         concatenated = torch.cat(encoded_modalities, dim=1)
-        return self.output_projection(self.output_encoder(concatenated))
+        return self.output_projection(concatenated)
