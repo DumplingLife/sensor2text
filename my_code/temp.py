@@ -27,7 +27,6 @@ inputs = {
 
 with torch.no_grad():
     embeddings = model(inputs)
-embeddings[ModalityType.VISION] *= 10
 
 print(
     "Vision x Text: ",
