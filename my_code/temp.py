@@ -42,6 +42,7 @@ print(
 )
 
 print(embeddings[ModalityType.VISION])
+print(embeddings[ModalityType.AUDIO])
 print(embeddings[ModalityType.TEXT])
 
 # Expected output:
