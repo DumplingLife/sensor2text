@@ -41,6 +41,9 @@ print(
     torch.softmax(embeddings[ModalityType.VISION] @ embeddings[ModalityType.AUDIO].T, dim=-1),
 )
 
+print(embeddings[ModalityType.VISION])
+print(embeddings[ModalityType.TEXT])
+
 # Expected output:
 #
 # Vision x Text:
