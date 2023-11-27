@@ -13,7 +13,8 @@ audio_paths = [assets_folder + x for x in audio_paths]
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
 # Instantiate model
-model = imagebind_model.imagebind_huge(pretrained=True)
+model, emb_size = imagebind_model.imagebind_huge()
+model.load_state_dict(torch.load("../Video-LLaMA-2-7B-Finetuned/imagebind_huge.pth"))
 model.eval()
 model.to(device)
 
