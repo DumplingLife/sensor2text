@@ -28,7 +28,7 @@ batch_size = 32
 epochs = 30
 
 # dataset = ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_text_2s")
-dataset = ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_2s")
+dataset = ActionsenseDataset("actionsense_data/emg_2s", "actionsense_data/imagebind_targets_2s")
 print("len(dataset):", len(dataset))
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
@@ -40,8 +40,8 @@ for i, (inputs, targets, _) in enumerate(dataloader):
     print(targets.shape)
     break
 
-# model = Model()
-model = AllSensorsModel()
+model = Model()
+# model = AllSensorsModel()
 
 loss_function = ContrastiveLoss()
 # loss_function = nn.MSELoss()
