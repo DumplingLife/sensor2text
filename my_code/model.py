@@ -50,6 +50,10 @@ class AllSensorsModel(nn.Module):
         nhead=4
         num_layers=4
         dropout=0.1
+        self.cls_tokens = nn.ParameterDict({
+            modality: nn.Parameter(torch.randn(1, 1, input_size))
+            for modality, input_size in self.input_sizes.items()
+        })
         self.input_projections = nn.ModuleDict({
             modality: nn.Linear(input_size, d_models[modality]) 
             for modality, input_size in self.input_sizes.items()
@@ -62,7 +66,6 @@ class AllSensorsModel(nn.Module):
             modality: nn.TransformerEncoder(nn.TransformerEncoderLayer(d_models[modality], nhead, dropout=dropout), num_layers=num_layers)
             for modality in self.input_sizes.keys()
         })
-        self.output_encoder = nn.TransformerEncoder(nn.TransformerEncoderLayer(sum(d_models.values()), 4, dropout=dropout), num_layers=4)
         self.output_projection = nn.Linear(sum(d_models.values()), 1024)
 
     def forward(self, x):
@@ -71,12 +74,12 @@ class AllSensorsModel(nn.Module):
         for modality, size in self.input_sizes.items():
             end = start + size
             modality_input = x[:, :, start:end]
+            cls_tokens = self.cls_tokens[modality].expand(x.size(0), -1, -1)
+            modality_input = torch.cat((cls_tokens, modality_input), dim=1)
             projection = self.input_projections[modality](modality_input)
             encoding = self.pos_encoders[modality](projection)
             encoded = self.encoders[modality](encoding)
-            # encoded_modalities.append(encoded[:, 0, :])
-            encoded_modalities.append(encoded)
+            encoded_modalities.append(encoded[:, 0, :])
             start = end
-        # concatenated = torch.cat(encoded_modalities, dim=1)
-        concatenated = torch.cat(encoded_modalities, dim=2)
+        concatenated = torch.cat(encoded_modalities, dim=1)
         return self.output_projection(self.output_encoder(concatenated))
