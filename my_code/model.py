@@ -43,7 +43,7 @@ class AllSensorsModel(nn.Module):
         self.input_sizes = {'eye': 2, 'emg': 16, 'tactile': 32, 'body': 66}
         output_size = 128
         self.encoders = nn.ModuleDict({
-            modality: Model(input_size=input_size, d_model=128, nhead=4, num_layers=12, output_size=output_size, dropout=0.1)
+            modality: Model(input_size=input_size, d_model=128, nhead=4, num_layers=8, output_size=output_size, dropout=0.1)
             for modality, input_size in self.input_sizes.items()
         })
         self.output_projection = nn.Linear(output_size*len(self.input_sizes), 1024)
