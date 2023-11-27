@@ -77,7 +77,7 @@ class AllSensorsModel(nn.Module):
             encoded = self.encoders[modality](encoding)
             encoded_modalities.append(encoded)
             start = end
-        x = torch.cat(encoded_modalities, dim=1)
+        x = torch.cat(encoded_modalities, dim=2)
         cls_tokens = self.cls_token.expand(x.size(0), -1, -1)
         x = torch.cat((cls_tokens, x), dim=1)
         x = self.output_encoder(x)[:, 0, :]
