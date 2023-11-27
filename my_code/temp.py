@@ -1,5 +1,5 @@
-from video_llama.models.ImageBind import data
 import torch
+from video_llama.models.ImageBind import data
 from video_llama.models.ImageBind.models import imagebind_model
 from video_llama.models.ImageBind.models.imagebind_model import ModalityType
 
