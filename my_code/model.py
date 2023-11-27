@@ -1,8 +1,3 @@
-"""
-Model and AllSensorsModel are their own models (i.e. its not one builds off another)
-I put both here for organization
-"""
-
 import torch
 import torch.nn as nn
 
@@ -23,15 +18,15 @@ class PositionalEncoding(nn.Module):
         return self.dropout(x)
 
 class Model(nn.Module):
-    def __init__(self, d_model=256, nhead=8, num_layers=8, dropout=0.1):
+    def __init__(self, input_size=16, d_model=256, nhead=8, num_layers=8, output_size=1024, dropout=0.1):
         super().__init__()
-        self.input_size = 16
-        self.cls_token = nn.Parameter(torch.randn(1, 1, self.input_size))
-        self.input_projection = nn.Linear(self.input_size, d_model)
+        self.input_size = input_size
+        self.cls_token = nn.Parameter(torch.randn(1, 1, input_size))
+        self.input_projection = nn.Linear(input_size, d_model)
         self.pos_encoder = PositionalEncoding(d_model, dropout)
         self.encoder_layer = nn.TransformerEncoderLayer(d_model, nhead, dropout=dropout)
         self.encoder = nn.TransformerEncoder(self.encoder_layer, num_layers=num_layers)
-        self.output_projection = nn.Linear(d_model, 1024)
+        self.output_projection = nn.Linear(d_model, output_size)
 
     def forward(self, x):
         cls_tokens = self.cls_token.expand(x.size(0), -1, -1)
@@ -50,21 +45,11 @@ class AllSensorsModel(nn.Module):
         nhead=4
         num_layers=4
         dropout=0.1
-        self.input_projections = nn.ModuleDict({
-            modality: nn.Linear(input_size, d_models[modality]) 
+        self.encoders = nn.ModuleDict({
+            modality: Model(input_size=input_size, d_model=d_models[modality], nhead=nhead, num_layers=num_layers, output_size=128, dropout=dropout)
             for modality, input_size in self.input_sizes.items()
         })
-        self.pos_encoders = nn.ModuleDict({
-            modality: PositionalEncoding(d_models[modality], dropout) 
-            for modality in self.input_sizes.keys()
-        })
-        self.encoders = nn.ModuleDict({
-            modality: nn.TransformerEncoder(nn.TransformerEncoderLayer(d_models[modality], nhead, dropout=dropout), num_layers=num_layers)
-            for modality in self.input_sizes.keys()
-        })
-        self.cls_token = nn.Parameter(torch.randn(1, 1, sum(d_models.values())))
-        self.output_encoder = nn.TransformerEncoder(nn.TransformerEncoderLayer(sum(d_models.values()), 4, dropout=dropout), num_layers=2)
-        self.output_projection = nn.Linear(sum(d_models.values()), 1024)
+        self.output_projection = nn.Linear(128*len(self.input_sizes), 1024)
 
     def forward(self, x):
         start = 0
@@ -72,13 +57,8 @@ class AllSensorsModel(nn.Module):
         for modality, size in self.input_sizes.items():
             end = start + size
             modality_input = x[:, :, start:end]
-            projection = self.input_projections[modality](modality_input)
-            encoding = self.pos_encoders[modality](projection)
-            encoded = self.encoders[modality](encoding)
+            encoded = self.encoders[modality](modality_input)
             encoded_modalities.append(encoded)
             start = end
-        x = torch.cat(encoded_modalities, dim=2)
-        cls_tokens = self.cls_token.expand(x.size(0), -1, -1)
-        x = torch.cat((cls_tokens, x), dim=1)
-        x = self.output_encoder(x)[:, 0, :]
+        x = torch.cat(encoded_modalities, dim=1)
         return self.output_projection(x)
