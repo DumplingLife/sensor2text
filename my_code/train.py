@@ -27,24 +27,16 @@ learning_rate = 0.0003
 batch_size = 32
 epochs = 30
 
-dataset = ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_text_2s")
 # dataset = ActionsenseDataset("actionsense_data/emg_2s", "actionsense_data/imagebind_targets_text_2s")
+dataset = ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_text_2s")
 print("len(dataset):", len(dataset))
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
-
-# print
-for i, (inputs, targets, _) in enumerate(dataloader):
-    print(inputs)
-    print(targets)
-    print(inputs.shape)
-    print(targets.shape)
-    break
 
 # model = Model()
 model = AllSensorsModel()
 
-# loss_function = ContrastiveLoss()
-loss_function = nn.MSELoss()
+loss_function = ContrastiveLoss()
+# loss_function = nn.MSELoss()
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
 for epoch in tqdm(range(epochs)):
