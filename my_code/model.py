@@ -62,8 +62,8 @@ class AllSensorsModel(nn.Module):
             modality: nn.TransformerEncoder(nn.TransformerEncoderLayer(d_models[modality], nhead, dropout=dropout), num_layers=num_layers)
             for modality in self.input_sizes.keys()
         })
+        self.output_encoder = nn.TransformerEncoder(nn.TransformerEncoderLayer(sum(d_models.values()), 4, dropout=dropout), num_layers=4)
         self.output_projection = nn.Linear(sum(d_models.values()), 1024)
-        self.output_encoder = nn.TransformerEncoder(nn.TransformerEncoderLayer(128, 4, dropout=dropout), num_layers=4)
 
     def forward(self, x):
         start = 0
