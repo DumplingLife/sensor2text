@@ -4,7 +4,7 @@ from video_llama.models.ImageBind.models import imagebind_model
 from video_llama.models.ImageBind.models.imagebind_model import ModalityType
 
 text_list=["A dog.", "A car", "A bird"]
-assets_folder = "video_llama/models/ImageBind/assets/"
+assets_folder = "video_llama/models/ImageBind/.assets/"
 image_paths=["dog_image.jpg", "car_image.jpg", "bird_image.jpg"]
 image_paths = [assets_folder + x for x in image_paths]
 audio_paths=["dog_audio.wav", "car_audio.wav", "bird_audio.wav"]
