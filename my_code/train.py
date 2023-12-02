@@ -78,9 +78,9 @@ for output, targets in zip(outputs, targets_list):
     squared_error_to_target += torch.mean((output - targets)**2)
     squared_error_to_mean += torch.mean((mean_output-output)**2)
     targets_squared_error_to_mean += torch.mean((targets-mean_targets)**2)
-print("MSE:", squared_error_to_target / len(dataset))
-print("average pred squared error to pred mean:", squared_error_to_mean / len(dataset))
-print("average target squared error to target mean:", targets_squared_error_to_mean / len(dataset))
+print("MSE:", squared_error_to_target.item() / len(dataset))
+print("average pred squared error to pred mean:", squared_error_to_mean.item() / len(dataset))
+print("average target squared error to target mean:", targets_squared_error_to_mean.item() / len(dataset))
 
 
 for i in range(len(dataset)):
