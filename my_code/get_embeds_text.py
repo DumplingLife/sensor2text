@@ -6,8 +6,8 @@ import numpy as np
 import h5py
 import os
 
-input_dir = "hdf_data/2s_withlabel/S03.hdf5"
-output_dir = "actionsense_data/imagebind_targets_text_2s/S03"
+input_dir = "hdf_data/2s_withlabel/S04.hdf5"
+output_dir = "actionsense_data/imagebind_targets_text_2s/S04"
 os.makedirs(output_dir)
 
 device = "cuda:0"
