@@ -6,8 +6,8 @@ import numpy as np
 import os
 import time
 
-input_dir = "actionsense_data/videos_processed_2s/2022-06-14_16-38-43_S04_eye-tracking-video-worldGaze_frame"
-output_dir = "actionsense_data/imagebind_targets_2s/S04"
+input_dir = "actionsense_data/videos_processed_2s/2022-06-13_23-22-44_S02_eye-tracking-video-worldGaze_frame"
+output_dir = "actionsense_data/imagebind_targets_2s/S02_3"
 # os.makedirs(output_dir)
 
 device = "cuda:0"
