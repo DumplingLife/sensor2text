@@ -1,8 +1,10 @@
 import h5py
 import numpy as np
+import os
 
-hdf5_file_path = 'hdf_data/2s_withlabel/S02_1.hdf5'
-output_dir = 'actionsense_data/all_sensors_2s/S02_1'
+hdf5_file_path = 'hdf_data/2s_withlabel/S03.hdf5'
+output_dir = 'actionsense_data/all_sensors_2s/S03'
+os.makedirs(output_dir)
 
 with h5py.File(hdf5_file_path, 'r') as hdf_file:
     example_matrices = hdf_file['example_matrices'][:]
