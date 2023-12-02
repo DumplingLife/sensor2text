@@ -22,10 +22,9 @@ class Model(nn.Module):
         super().__init__()
         self.input_size = input_size
         self.cls_token = nn.Parameter(torch.randn(1, 1, input_size)) if use_cls_token else None
-        self.input_projection = nn.Linear(input_size, d_model)
+        # self.input_projection = nn.Linear(input_size, d_model)
         self.pos_encoder = PositionalEncoding(d_model, dropout) if use_pos_encoder else None
-        self.encoder_layer = nn.TransformerEncoderLayer(d_model, nhead, dropout=dropout)
-        self.encoder = nn.TransformerEncoder(self.encoder_layer, num_layers=num_layers)
+        self.encoder = nn.TransformerEncoder(nn.TransformerEncoderLayer(d_model, nhead, dropout=dropout), num_layers=num_layers)
         self.output_projection = nn.Linear(d_model, output_size)
 
     def forward(self, x):
