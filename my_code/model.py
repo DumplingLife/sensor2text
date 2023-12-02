@@ -61,8 +61,7 @@ class AllSensorsModel(nn.Module):
             modality_input = x[:, :, start:end]
             encoded = self.encoders[modality](modality_input)
             encoded_modalities.append(encoded)
+            print(encoded.size())
             start = end
-        print(encoded_modalities[0].size())
-        print(encoded_modalities[1].size())
         x = torch.cat(encoded_modalities, dim=1)
         return self.final_encoder(x)
