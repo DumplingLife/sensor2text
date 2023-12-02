@@ -4,6 +4,7 @@ from video_llama.models.ImageBind import data
 import torch
 import numpy as np
 import os
+import time
 
 device = "cuda:0"
 
@@ -31,8 +32,10 @@ for batch_start in range(0, video_count, batch_size):
         ModalityType.VISION: data.load_and_transform_video_data(video_paths, device)
     }
 
+    start_time = time.time()
     with torch.no_grad():
         embeddings = model(inputs)
+    print(f"{time.time() - start_time}s taken")
 
     for i, video_idx in enumerate(range(batch_start, batch_end)):
         print(embeddings["vision"][i].shape)
