@@ -8,7 +8,7 @@ import time
 
 input_dir = "actionsense_data/videos_processed_2s/2022-06-14_13-52-57_S03_eye-tracking-video-worldGaze_frame"
 output_dir = "actionsense_data/imagebind_targets_2s/S03"
-os.makedirs(output_dir)
+# os.makedirs(output_dir)
 
 device = "cuda:0"
 
