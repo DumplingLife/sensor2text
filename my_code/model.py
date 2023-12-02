@@ -47,7 +47,7 @@ class AllSensorsModel(nn.Module):
         modality_d_hidden = 128
         self.encoders = nn.ModuleDict({
             modality: Model(input_size=input_size, d_model=modality_d_hidden, nhead=2, num_layers=4, output_size=modality_d_hidden, dropout=0.1,
-                use_cls_token=False, use_pos_encoder=True)
+                use_cls_token=True, use_pos_encoder=True)
             for modality, input_size in self.input_sizes.items()
         })
         self.output_proj = nn.Linear(len(self.input_sizes) * modality_d_hidden, 1024)
