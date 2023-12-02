@@ -31,7 +31,7 @@ class Model(nn.Module):
         if self.cls_token is not None:
             cls_tokens = self.cls_token.expand(x.size(0), -1, -1)
             x = torch.cat((cls_tokens, x), dim=1)
-        x = self.input_projection(x)
+        # x = self.input_projection(x)
         if self.pos_encoder is not None:
             x = self.pos_encoder(x)
         x = self.encoder(x)
