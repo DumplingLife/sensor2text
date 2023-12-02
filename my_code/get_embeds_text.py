@@ -14,7 +14,7 @@ model.to(device)
 # Define batch size
 batch_size = 16
 
-with h5py.File("actionsense_data/text/S00_2s_withlabel.hdf5", 'r') as hdf_file:
+with h5py.File("hdf_data/2s_withlabel/S00.hdf5", 'r') as hdf_file:
     all_example_labels = hdf_file["example_labels"]
     example_labels = []
     for idx, label in enumerate(all_example_labels):
