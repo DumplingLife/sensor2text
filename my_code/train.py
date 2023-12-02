@@ -35,8 +35,8 @@ dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 # model = Model()
 model = AllSensorsModel()
 
-loss_function = ContrastiveLoss()
-# loss_function = nn.MSELoss()
+# loss_function = ContrastiveLoss()
+loss_function = nn.MSELoss()
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
 for epoch in tqdm(range(epochs)):
