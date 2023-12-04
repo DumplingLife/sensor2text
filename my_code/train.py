@@ -35,6 +35,7 @@ dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 # model = Model()
 model = AllSensorsModel()
 saved_state_dict = torch.load("my_code/best_model.pt")
+print(saved_state_dict)
 for modality, encoder in model.encoders.items():
     encoder_state_dict = encoder.state_dict()
     encoder_state_dict.update(saved_state_dict[f"encoders.{modality}.encoder"])
