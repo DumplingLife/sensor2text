@@ -40,7 +40,7 @@ class AllSensorsModel(nn.Module):
                 num_layers=2,
                 output_size=output_sizes[modality],
                 dropout=0.1,
-                use_input_projection=False,
+                use_input_projection=True,
                 use_cls_token=True,
                 use_pos_encoder=True
                 )
