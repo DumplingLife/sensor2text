@@ -30,11 +30,11 @@ class AllSensorsModel(nn.Module):
         self.input_sizes = {'eye': 2, 'emg': 16, 'tactile': 32, 'body': 66}
         modality_d_hidden = 128
         self.encoders = nn.ModuleDict({
-            modality: Model(input_size=input_size, d_model=modality_d_hidden, nhead=2, num_layers=4, output_size=modality_d_hidden, dropout=0.1,
+            modality: Model(input_size=input_size, d_model=input_size, nhead=2, num_layers=4, output_size=modality_d_hidden, dropout=0.1,
                 use_cls_token=True, use_pos_encoder=True)
             for modality, input_size in self.input_sizes.items()
         })
-        self.output_proj = nn.Linear(len(self.input_sizes) * modality_d_hidden, 1024)
+        self.output_proj = nn.Linear(sum(self.input_sizes.values()), 1024)
 
     def forward(self, x):
         start = 0
