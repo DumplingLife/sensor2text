@@ -49,6 +49,7 @@ class AllSensorsModel(nn.Module):
         self.output_proj = nn.Linear(sum(output_sizes.values()), 1024)
 
     def forward(self, x):
+        """
         start = 0
         encoded_modalities = []
         for modality, size in self.input_sizes.items():
@@ -59,8 +60,9 @@ class AllSensorsModel(nn.Module):
             start = end
         x = torch.cat(encoded_modalities, dim=-1)
         return self.output_proj(x)
+        """
 
-        # return self.output_proj(x[:,0,:])
+        return self.output_proj(x[:,0,:])
 
 """
 class AllSensorsModel(nn.Module):
