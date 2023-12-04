@@ -51,8 +51,8 @@ for modality, encoder in model.encoders.items():
     print("="*50)
     encoder.load_state_dict(encoder_state_dict)
 
-loss_function = ContrastiveLoss()
-# loss_function = nn.MSELoss()
+# loss_function = ContrastiveLoss()
+loss_function = nn.MSELoss()
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
 for epoch in tqdm(range(epochs)):
