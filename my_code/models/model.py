@@ -28,9 +28,8 @@ class AllSensorsModel(nn.Module):
     def __init__(self):
         super().__init__()
         self.input_sizes = {'eye': 2, 'emg': 16, 'tactile': 32, 'body': 66}
-        modality_d_hidden = 128
         self.encoders = nn.ModuleDict({
-            modality: Model(input_size=input_size, d_model=input_size, nhead=2, num_layers=4, output_size=modality_d_hidden, dropout=0.1,
+            modality: Model(input_size=input_size, d_model=input_size, nhead=2, num_layers=4, output_size=input_size, dropout=0.1,
                 use_cls_token=True, use_pos_encoder=True)
             for modality, input_size in self.input_sizes.items()
         })
