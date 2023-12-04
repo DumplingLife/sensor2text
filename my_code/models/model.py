@@ -3,11 +3,11 @@ import torch.nn as nn
 from my_code.models.common import PositionalEncoding
 
 class Model(nn.Module):
-    def __init__(self, input_size=16, d_model=256, nhead=8, num_layers=8, output_size=1024, dropout=0.1, use_cls_token=True, use_pos_encoder=True):
+    def __init__(self, input_size=16, d_model=256, nhead=8, num_layers=8, output_size=1024, dropout=0.1, use_input_projection=True, use_cls_token=True, use_pos_encoder=True):
         super().__init__()
         self.input_size = input_size
         self.cls_token = nn.Parameter(torch.randn(1, 1, input_size)) if use_cls_token else None
-        self.input_projection = nn.Linear(input_size, d_model)
+        self.input_projection = nn.Linear(input_size, d_model) if use_input_projection else None
         self.pos_encoder = PositionalEncoding(d_model, dropout) if use_pos_encoder else None
         self.encoder = nn.TransformerEncoder(nn.TransformerEncoderLayer(d_model, nhead, dropout=dropout), num_layers=num_layers)
         self.output_projection = nn.Linear(d_model, output_size)
@@ -16,7 +16,8 @@ class Model(nn.Module):
         if self.cls_token is not None:
             cls_tokens = self.cls_token.expand(x.size(0), -1, -1)
             x = torch.cat((cls_tokens, x), dim=1)
-        x = self.input_projection(x)
+        if self.input_projection is not None:
+            x = self.input_projection(x)
         if self.pos_encoder is not None:
             x = self.pos_encoder(x)
         x = self.encoder(x)
