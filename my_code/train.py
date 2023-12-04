@@ -37,9 +37,13 @@ model = AllSensorsModel()
 saved_state_dict = torch.load("my_code/best_model.pt")
 for modality, encoder in model.encoders.items():
     encoder_state_dict = encoder.state_dict()
+    loaded_keys = [] # debug
     for encoder_key in encoder_state_dict.keys():
         if encoder_key == f"encoders.{modality}.{encoder_key}":
             encoder_state_dict[encoder_key] = saved_state_dict[f"encoders.{modality}.{encoder_key}"]
+            loaded_keys.append(encoder_key)
+    print(loaded_keys)
+    print("="*50)
     encoder.load_state_dict(encoder_state_dict)
 
 loss_function = ContrastiveLoss()
