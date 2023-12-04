@@ -10,8 +10,7 @@ from my_code.data import ActionsenseDataset
 
 
 class ContrastiveLoss(nn.Module):
-    # def __init__(self, temperature=0.07):
-    def __init__(self, temperature=0.02):
+    def __init__(self, temperature=0.07):
         super().__init__()
         self.temperature = temperature
 
