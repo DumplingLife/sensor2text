@@ -5,7 +5,7 @@ import torch.optim as optim
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from tqdm import tqdm
-from my_code.model import Model, AllSensorsModel
+from my_code.models.model import Model, AllSensorsModel
 from my_code.data import ActionsenseDataset
 
 
