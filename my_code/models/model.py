@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from common import PositionalEncoding
+from my_code.models.common import PositionalEncoding
 
 class Model(nn.Module):
     def __init__(self, input_size=16, d_model=256, nhead=8, num_layers=8, output_size=1024, dropout=0.1, use_cls_token=True, use_pos_encoder=True):
