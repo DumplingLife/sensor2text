@@ -14,7 +14,7 @@ batch_size = 32
 epochs = 30
 
 dataset = ConcatDataset([
-    ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_2s", "videos"),
+    ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_2s", "video"),
     ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_text_2s", "text"),
 ])
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
@@ -41,8 +41,6 @@ for epoch in tqdm(range(epochs)):
         loss = contrastive_loss(outputs, targets) * contrastive_loss_weight
         total_mse_loss = 0
         for output, target, flag in zip(outputs, targets, flags):
-            print(flag)
-            exit()
             if flag == "video":
                 total_mse_loss += mse_loss(output, target)
         loss += total_mse_loss
