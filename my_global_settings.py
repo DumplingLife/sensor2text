@@ -7,8 +7,8 @@ settings = {
     "use_emg_embedding": False,
 
     # use the pre-qformer imagebind embeddings, subbed in for audio branch
-    # "use_imagebind_embedding": True
-    "use_imagebind_embedding": False
+    "use_imagebind_embedding": True
+    # "use_imagebind_embedding": False
 }
 
 # turning both of these on is weird, probably bug
