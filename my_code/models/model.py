@@ -48,13 +48,14 @@ class AllSensorsModel(nn.Module):
                 )
             for modality in self.input_sizes.keys()
         })
+        lstm_dim = 256
         self.lstm = nn.LSTM(
             input_size=sum(output_sizes.values()),
-            hidden_size=256,
+            hidden_size=lstm_dim,
             num_layers=1,
             batch_first=True,
             )
-        self.output_proj = nn.Linear(sum(output_sizes.values()), 1024)
+        self.output_proj = nn.Linear(lstm_dim, 1024)
 
     def forward(self, x):
         start = 0
