@@ -29,10 +29,10 @@ class AllSensorsModel(nn.Module):
     def __init__(self):
         super().__init__()
         self.input_sizes = {'eye': 2, 'emg': 16, 'tactile': 32, 'body': 66}
-        d_models = self.input_sizes
-        output_sizes = self.input_sizes
-        # d_models = {'eye': 128, 'emg': 128, 'tactile': 128, 'body': 128}
-        # output_sizes = {'eye': 128, 'emg': 128, 'tactile': 128, 'body': 128}
+        # d_models = self.input_sizes
+        # output_sizes = self.input_sizes
+        d_models = {'eye': 128, 'emg': 128, 'tactile': 128, 'body': 128}
+        output_sizes = {'eye': 128, 'emg': 128, 'tactile': 128, 'body': 128}
         
         self.encoders = nn.ModuleDict({
             modality: Model(
@@ -48,10 +48,14 @@ class AllSensorsModel(nn.Module):
                 )
             for modality in self.input_sizes.keys()
         })
+        self.lstm = nn.LSTM(
+            input_size=sum(output_sizes.values()),
+            hidden_size=256,
+            num_layers=1,
+            )
         self.output_proj = nn.Linear(sum(output_sizes.values()), 1024)
 
     def forward(self, x):
-        """
         start = 0
         encoded_modalities = []
         for modality, size in self.input_sizes.items():
@@ -61,34 +65,8 @@ class AllSensorsModel(nn.Module):
             encoded_modalities.append(encoded)
             start = end
         x = torch.cat(encoded_modalities, dim=-1)
-        return self.output_proj(x)
-        """
+        x = self.lstm(x)[:, -1, :]
+        x = self.output_proj(x)
+        return x
 
-        return self.output_proj(x[:,0,:])
-
-"""
-class AllSensorsModel(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.input_sizes = {'eye': 2, 'emg': 16, 'tactile': 32, 'body': 66}
-        modality_d_hidden = 128
-        self.encoders = nn.ModuleDict({
-            modality: Model(input_size=input_size, d_model=modality_d_hidden, nhead=2, num_layers=2, output_size=modality_d_hidden, dropout=0.1,
-                use_cls_token=False, use_pos_encoder=True)
-            for modality, input_size in self.input_sizes.items()
-        })
-        self.final_encoder = Model(input_size=len(self.input_sizes) * modality_d_hidden, d_model=128, nhead=2, num_layers=2, output_size=1024, dropout=0.1,
-            use_cls_token=True, use_pos_encoder=False)
-
-    def forward(self, x):
-        start = 0
-        encoded_modalities = []
-        for modality, size in self.input_sizes.items():
-            end = start + size
-            modality_input = x[:, :, start:end]
-            encoded = self.encoders[modality](modality_input)
-            encoded_modalities.append(encoded)
-            start = end
-        x = torch.cat(encoded_modalities, dim=-1)
-        return self.final_encoder(x)
-"""
+        # return self.output_proj(x[:,0,:])
