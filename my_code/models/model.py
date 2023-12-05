@@ -39,7 +39,7 @@ class AllSensorsModel(nn.Module):
                 input_size=self.input_sizes[modality],
                 d_model=d_models[modality],
                 nhead=2,
-                num_layers=4,
+                num_layers=3,
                 output_size=output_sizes[modality],
                 dropout=0.1,
                 use_input_projection=False,
