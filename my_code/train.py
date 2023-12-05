@@ -39,16 +39,15 @@ for epoch in tqdm(range(epochs)):
         outputs = model(inputs)
 
         loss = contrastive_loss(outputs, targets) * contrastive_loss_weight
-        total_mse_loss = 0
-        for output, target, flag in zip(outputs, targets, flags):
-            if flag == "video":
-                total_mse_loss += mse_loss(output, target)
-        loss += total_mse_loss
+
+        video_mask = (flags == "video")
+        mse_loss_value = mse_loss(outputs[video_mask], targets[video_mask])
+        loss += mse_loss_value
 
         loss.backward()
         optimizer.step()
         epoch_loss += loss.item()
-        epoch_mse_loss += total_mse_loss
+        epoch_mse_loss += mse_loss_value
         num_iters += 1
     print(f"Epoch [{epoch+1}/{epochs}], Loss: {epoch_loss / num_iters}, MSE Loss: {epoch_mse_loss / num_iters}")
 
