@@ -19,8 +19,6 @@ class ActionsenseDataset(Dataset):
                 self.data_files.append(f"{data_dir}/{subdir}/{file}")
                 self.target_files.append(f"{target_dir}/{subdir}/{file}")
                 self.filepaths.append(f"{subdir}/{file}")
-        
-        random.shuffle(self.target_files)
 
     def __len__(self):
         return len(self.data_files)
