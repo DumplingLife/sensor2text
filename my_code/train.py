@@ -38,6 +38,9 @@ for epoch in tqdm(range(epochs)):
 
         loss = contrastive_loss(outputs, targets) * contrastive_loss_weight
         video_mask = (flags == "video")
+        print(video_mask)
+        print(outputs[video_mask], targets[video_mask])
+        exit()
         loss += mse_loss(outputs[video_mask], targets[video_mask])
 
         loss.backward()
