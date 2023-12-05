@@ -53,7 +53,7 @@ def load_saved_model():
         print("="*50)
         encoder.load_state_dict(encoder_state_dict)
 
-# load_saved_model()
+load_saved_model()
 
 loss_function = ContrastiveLoss()
 # loss_function = nn.MSELoss()
