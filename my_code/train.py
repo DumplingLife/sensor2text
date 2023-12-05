@@ -59,7 +59,7 @@ load_saved_model()
 contrastive_loss = ContrastiveLoss()
 mse_loss = nn.MSELoss()
 def loss_function(outputs, targets):
-    return mse_loss(outputs, targets) * 0.0001 * contrastive_loss(outputs, targets)
+    return mse_loss(outputs, targets) + 0.0001 * contrastive_loss(outputs, targets)
 
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
