@@ -80,3 +80,22 @@ class AllSensorsModel(nn.Module):
         return self.output_proj(x[:, -1, :])
 
         # return self.output_proj(x[:,0,:])
+
+def load_saved_model(model, path):
+    saved_state_dict = torch.load(path)
+    for modality, encoder in model.encoders.items():
+        encoder_state_dict = encoder.state_dict()
+        # loaded_keys and not_loaded_keys are for debug printing only, no other purpose
+        loaded_keys = []
+        not_loaded_keys = []
+        for encoder_key, _ in encoder.named_parameters():
+            if f"encoders.{modality}.{encoder_key}" in saved_state_dict:
+                encoder_state_dict[encoder_key] = saved_state_dict[f"encoders.{modality}.{encoder_key}"]
+                loaded_keys.append(encoder_key)
+            else:
+                not_loaded_keys.append(encoder_key)
+        print(loaded_keys)
+        print("="*10)
+        print(not_loaded_keys)
+        print("="*50)
+        encoder.load_state_dict(encoder_state_dict)

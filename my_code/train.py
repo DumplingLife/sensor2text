@@ -2,25 +2,11 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import torch.nn.functional as F
-from torch.utils.data import DataLoader, ConcatDataset
+from torch.utils.data import DataLoader
 from tqdm import tqdm
-from my_code.models.model import Model, AllSensorsModel
+from my_code.models.model import Model, AllSensorsModel, load_saved_model
 from my_code.data import ActionsenseDataset
-
-
-class ContrastiveLoss(nn.Module):
-    def __init__(self, temperature=0.07):
-        super().__init__()
-        self.temperature = temperature
-
-    def forward(self, queries, keys):
-        queries = F.normalize(queries, p=2, dim=1)
-        keys = F.normalize(keys, p=2, dim=1)
-        similarity = torch.matmul(queries, keys.T) / self.temperature
-        labels = torch.arange(queries.size(0)).to(queries.device)
-        loss = F.cross_entropy(similarity, labels)
-        return loss
+from my_code.losses import ContrastiveLoss
 
 
 learning_rate = 0.0003
@@ -35,26 +21,7 @@ text_dataloader = DataLoader(text_dataset, batch_size=batch_size, shuffle=True)
 
 model = AllSensorsModel()
 
-def load_saved_model():
-    saved_state_dict = torch.load("my_code/best_model.pt")
-    for modality, encoder in model.encoders.items():
-        encoder_state_dict = encoder.state_dict()
-        # loaded_keys and not_loaded_keys are for debug printing only, no other purpose
-        loaded_keys = []
-        not_loaded_keys = []
-        for encoder_key, param in encoder.named_parameters():
-            if f"encoders.{modality}.{encoder_key}" in saved_state_dict:
-                encoder_state_dict[encoder_key] = saved_state_dict[f"encoders.{modality}.{encoder_key}"]
-                loaded_keys.append(encoder_key)
-            else:
-                not_loaded_keys.append(encoder_key)
-        print(loaded_keys)
-        print("="*10)
-        print(not_loaded_keys)
-        print("="*50)
-        encoder.load_state_dict(encoder_state_dict)
-
-load_saved_model()
+load_saved_model(model, "my_code/best_model.pt")
 
 contrastive_loss = ContrastiveLoss()
 contrastive_loss_weight = 0.0001
@@ -65,12 +32,13 @@ optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 for epoch in tqdm(range(epochs)):
     total_loss = 0
     num_iters = 0
-    for i, (inputs, targets, _, flag) in enumerate(dataloader):
+    for i, (inputs, targets, _, flags) in enumerate(dataloader):
         optimizer.zero_grad()
         outputs = model(inputs)
         loss = contrastive_loss(outputs, targets) * contrastive_loss_weight
-        if flag == "video":
-            loss += mse_loss(outputs, targets)
+        for output, target, flag in zip(outputs, targets, flags):
+            if flag == "video":
+                loss += mse_loss(output, target)
         loss.backward()
         optimizer.step()
         total_loss += loss.item()
