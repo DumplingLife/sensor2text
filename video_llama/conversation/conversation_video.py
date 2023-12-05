@@ -269,6 +269,7 @@ class Chat:
                 # audio_emb,_  = self.model.encode_audioQformer(audio)
                 audio_emb,_  = self.model.encode_audioQformer(einops.rearrange(video, 'b c t h w -> b t c h w'), modality_type=ModalityType.VISION) # === my stuff
 
+                # === MY EDITS
                 # original stuff
                 """
                 img_list.append(audio_emb)
