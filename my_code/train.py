@@ -2,7 +2,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, ConcatDataset
 from tqdm import tqdm
 from my_code.models.model import Model, AllSensorsModel, load_saved_model
 from my_code.data import ActionsenseDataset
@@ -13,11 +13,12 @@ learning_rate = 0.0003
 batch_size = 32
 epochs = 30
 
-dataset = ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_2s", "videos")
+dataset = ConcatDataset([
+    ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_2s", "videos"),
+    ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_text_2s", "text"),
+])
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 print("len(dataset):", len(dataset))
-text_dataset = ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_text_2s", "text")
-text_dataloader = DataLoader(text_dataset, batch_size=batch_size, shuffle=True)
 
 model = AllSensorsModel()
 
