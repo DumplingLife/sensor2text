@@ -31,7 +31,8 @@ mse_loss = nn.MSELoss()
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
 for epoch in tqdm(range(epochs)):
-    total_loss = 0
+    epoch_loss = 0
+    epoch_mse_loss = 0
     num_iters = 0
     for i, (inputs, targets, _, flags) in enumerate(dataloader):
         optimizer.zero_grad()
@@ -46,9 +47,10 @@ for epoch in tqdm(range(epochs)):
 
         loss.backward()
         optimizer.step()
-        total_loss += loss.item()
+        epoch_loss += loss.item()
+        epoch_mse_loss += total_mse_loss.item()
         num_iters += 1
-    print(f"Epoch [{epoch+1}/{epochs}], Loss: {total_loss / num_iters}")
+    print(f"Epoch [{epoch+1}/{epochs}], Loss: {epoch_loss / num_iters}, MSE Loss: {epoch_mse_loss / num_iters}")
 
 # testing stuff
 outputs = [None] * len(dataset)
