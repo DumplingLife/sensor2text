@@ -2,6 +2,15 @@ import torch
 import torch.nn as nn
 from my_code.models.common import PositionalEncoding
 
+class CNN1D(nn.Module):
+    def __init__(self, num_features=16):
+        super().__init__()
+        self.convs = nn.ModuleList([nn.Conv1d(in_channels=1, out_channels=1, kernel_size=3, stride=1, padding=1) for _ in range(num_features)])
+
+    def forward(self, x):
+        outputs = [self.convs[i](x[:, i:i+1, :]) for i in range(len(self.convs))]
+        return torch.cat(outputs, dim=1)
+
 class Model(nn.Module):
     def __init__(self, input_size, d_model, nhead, num_layers, output_size, dropout, use_input_projection=True, use_cls_token=True, use_pos_encoder=True):
         super().__init__()
