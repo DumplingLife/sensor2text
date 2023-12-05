@@ -3,7 +3,7 @@ import torch.nn as nn
 from my_code.models.common import PositionalEncoding
 
 class Model(nn.Module):
-    def __init__(self, input_size=16, d_model=256, nhead=8, num_layers=8, output_size=1024, dropout=0.1, use_input_projection=True, use_cls_token=True, use_pos_encoder=True):
+    def __init__(self, input_size, d_model, nhead, num_layers, output_size, dropout, use_input_projection=True, use_cls_token=True, use_pos_encoder=True):
         super().__init__()
         self.input_size = input_size
         self.cls_token = nn.Parameter(torch.randn(1, 1, input_size)) if use_cls_token else None
@@ -39,7 +39,7 @@ class AllSensorsModel(nn.Module):
                 input_size=self.input_sizes[modality],
                 d_model=d_models[modality],
                 nhead=2,
-                num_layers=2,
+                num_layers=3,
                 output_size=output_sizes[modality],
                 dropout=0.1,
                 use_input_projection=False,
