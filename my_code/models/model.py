@@ -52,6 +52,7 @@ class AllSensorsModel(nn.Module):
             input_size=sum(output_sizes.values()),
             hidden_size=256,
             num_layers=1,
+            batch_first=True,
             )
         self.output_proj = nn.Linear(sum(output_sizes.values()), 1024)
 
@@ -65,8 +66,7 @@ class AllSensorsModel(nn.Module):
             encoded_modalities.append(encoded)
             start = end
         x = torch.cat(encoded_modalities, dim=-1)
-        x = self.lstm(x)[:, -1, :]
-        x = self.output_proj(x)
-        return x
+        x, _ = self.lstm(x)
+        return self.output_proj(x[:, -1, :])
 
         # return self.output_proj(x[:,0,:])
