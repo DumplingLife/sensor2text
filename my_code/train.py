@@ -27,13 +27,11 @@ learning_rate = 0.0003
 batch_size = 32
 epochs = 30
 
-# dataset = ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_2s")
-dataset = ConcatDataset([
-    ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_2s"),
-    ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_text_2s")
-])
-print("len(dataset):", len(dataset))
+dataset = ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_2s")
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+print("len(dataset):", len(dataset))
+text_dataset = ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_text_2s")
+text_dataloader = DataLoader(text_dataset, batch_size=batch_size, shuffle=True)
 
 model = AllSensorsModel()
 
@@ -58,8 +56,8 @@ def load_saved_model():
 
 load_saved_model()
 
-loss_function = ContrastiveLoss()
-# loss_function = nn.MSELoss()
+contrastive_loss = ContrastiveLoss()
+mse_loss = nn.MSELoss()
 
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
@@ -69,11 +67,19 @@ for epoch in tqdm(range(epochs)):
     for i, (inputs, targets, _) in enumerate(dataloader):
         optimizer.zero_grad()
         outputs = model(inputs)
-        loss = loss_function(outputs, targets)
+        loss = mse_loss(outputs, targets)
         loss.backward()
         optimizer.step()
         total_loss += loss.item()
         num_iters += 1
+    
+    contrastive_loss_weight = 0.0001
+    for i, (inputs, targets, _) in enumerate(text_dataloader):
+        optimizer.zero_grad()
+        outputs = model(inputs)
+        loss = contrastive_loss(outputs, targets) * contrastive_loss_weight
+        loss.backward()
+        optimizer.step()
 
     print(f"Epoch [{epoch+1}/{epochs}], Loss: {total_loss/num_iters}")
 
