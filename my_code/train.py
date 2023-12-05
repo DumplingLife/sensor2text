@@ -48,7 +48,7 @@ for epoch in tqdm(range(epochs)):
         loss.backward()
         optimizer.step()
         epoch_loss += loss.item()
-        epoch_mse_loss += total_mse_loss.item()
+        epoch_mse_loss += total_mse_loss
         num_iters += 1
     print(f"Epoch [{epoch+1}/{epochs}], Loss: {epoch_loss / num_iters}, MSE Loss: {epoch_mse_loss / num_iters}")
 
