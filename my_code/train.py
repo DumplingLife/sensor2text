@@ -31,7 +31,6 @@ dataset = ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_dat
 print("len(dataset):", len(dataset))
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
-# model = Model()
 model = AllSensorsModel()
 
 def load_saved_model():
