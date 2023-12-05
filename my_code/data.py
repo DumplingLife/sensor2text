@@ -5,7 +5,7 @@ import os
 import random
 
 class ActionsenseDataset(Dataset):
-    def __init__(self, data_dir, target_dir):
+    def __init__(self, data_dir, target_dir, flag):
         self.data_files = []
         self.target_files = []
         self.filepaths = []
@@ -19,6 +19,8 @@ class ActionsenseDataset(Dataset):
                 self.data_files.append(f"{data_dir}/{subdir}/{file}")
                 self.target_files.append(f"{target_dir}/{subdir}/{file}")
                 self.filepaths.append(f"{subdir}/{file}")
+        
+        self.flag = flag
 
     def __len__(self):
         return len(self.data_files)
@@ -26,4 +28,4 @@ class ActionsenseDataset(Dataset):
     def __getitem__(self, idx):
         data = np.load(self.data_files[idx])
         target = np.load(self.target_files[idx])
-        return torch.from_numpy(data).float(), torch.from_numpy(target).float(), self.filepaths[idx]
+        return torch.from_numpy(data).float(), torch.from_numpy(target).float(), self.filepaths[idx], self.flag
