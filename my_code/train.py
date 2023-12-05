@@ -40,7 +40,7 @@ for epoch in tqdm(range(epochs)):
 
         loss = contrastive_loss(outputs, targets) * contrastive_loss_weight
 
-        video_mask = torch.tensor([flag == "video" for flag in flags], dtype=torch.float32)
+        video_mask = torch.tensor([flag == "video" for flag in flags])
         mse_loss_value = mse_loss(outputs[video_mask], targets[video_mask])
         loss += mse_loss_value
 
