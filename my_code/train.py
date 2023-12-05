@@ -40,10 +40,11 @@ def load_saved_model():
         # loaded_keys and not_loaded_keys are for debug printing only, no other purpose
         loaded_keys = []
         not_loaded_keys = []
-        for encoder_key in encoder_state_dict.keys():
+        for encoder_key, param in encoder.named_parameters():
             if f"encoders.{modality}.{encoder_key}" in saved_state_dict:
                 encoder_state_dict[encoder_key] = saved_state_dict[f"encoders.{modality}.{encoder_key}"]
                 loaded_keys.append(encoder_key)
+                param.requires_grad = False # freeze
             else:
                 not_loaded_keys.append(encoder_key)
         print(loaded_keys)
