@@ -43,7 +43,7 @@ class AllSensorsModel(nn.Module):
                 output_size=output_sizes[modality],
                 dropout=0.1,
                 use_input_projection=True,
-                use_cls_token=True,
+                use_cls_token=False,
                 use_pos_encoder=True
                 )
             for modality in self.input_sizes.keys()
