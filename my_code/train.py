@@ -25,7 +25,7 @@ model = AllSensorsModel()
 load_saved_model(model, "my_code/best_model.pt")
 
 contrastive_loss = ContrastiveLoss()
-contrastive_loss_weight = 0.0001
+contrastive_loss_weight = 0.0003
 mse_loss = nn.MSELoss()
 
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
@@ -38,8 +38,8 @@ for epoch in tqdm(range(epochs)):
         optimizer.zero_grad()
         outputs = model(inputs)
 
-        loss = contrastive_loss(outputs, targets) * contrastive_loss_weight
-
+        loss = 0
+        loss += contrastive_loss(outputs, targets) * contrastive_loss_weight
         video_mask = torch.tensor([flag == "video" for flag in flags])
         mse_loss_value = mse_loss(outputs[video_mask], targets[video_mask])
         loss += mse_loss_value
