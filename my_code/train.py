@@ -23,9 +23,9 @@ class ContrastiveLoss(nn.Module):
         return loss
 
 
-learning_rate = 0.0003
+learning_rate = 0.0001
 batch_size = 32
-epochs = 30
+epochs = 50
 
 dataset = ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_2s")
 print("len(dataset):", len(dataset))
