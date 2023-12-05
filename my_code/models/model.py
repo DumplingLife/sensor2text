@@ -44,7 +44,7 @@ class AllSensorsModel(nn.Module):
                 dropout=0.1,
                 use_input_projection=False,
                 use_cls_token=False,
-                use_pos_encoder=False
+                use_pos_encoder=True
                 )
             for modality in self.input_sizes.keys()
         })
