@@ -27,10 +27,10 @@ learning_rate = 0.0003
 batch_size = 32
 epochs = 30
 
-dataset = ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_2s")
+dataset = ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_2s", "videos")
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 print("len(dataset):", len(dataset))
-text_dataset = ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_text_2s")
+text_dataset = ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_text_2s", "text")
 text_dataloader = DataLoader(text_dataset, batch_size=batch_size, shuffle=True)
 
 model = AllSensorsModel()
@@ -57,6 +57,7 @@ def load_saved_model():
 load_saved_model()
 
 contrastive_loss = ContrastiveLoss()
+contrastive_loss_weight = 0.0001
 mse_loss = nn.MSELoss()
 
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
@@ -64,31 +65,23 @@ optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 for epoch in tqdm(range(epochs)):
     total_loss = 0
     num_iters = 0
-    for i, (inputs, targets, _) in enumerate(dataloader):
+    for i, (inputs, targets, _, flag) in enumerate(dataloader):
         optimizer.zero_grad()
         outputs = model(inputs)
-        loss = mse_loss(outputs, targets)
+        loss = contrastive_loss(outputs, targets) * contrastive_loss_weight
+        if flag == "video":
+            loss += mse_loss(outputs, targets)
         loss.backward()
         optimizer.step()
         total_loss += loss.item()
         num_iters += 1
-    
-    contrastive_loss_weight = 0.0001
-    for i, (inputs, targets, _) in enumerate(text_dataloader):
-        optimizer.zero_grad()
-        outputs = model(inputs)
-        loss = contrastive_loss(outputs, targets) * contrastive_loss_weight
-        loss.backward()
-        optimizer.step()
-
-    print(f"Epoch [{epoch+1}/{epochs}], Loss: {total_loss/num_iters}")
-
+    print(f"Epoch [{epoch+1}/{epochs}], Loss: {total_loss / num_iters}")
 
 # testing stuff
 outputs = [None] * len(dataset)
 targets_list = [None] * len(dataset)
 output_paths = [None] * len(dataset)
-for i, (inputs, targets, filepath) in enumerate(DataLoader(dataset, batch_size=1, shuffle=True)):
+for i, (inputs, targets, filepath, _) in enumerate(DataLoader(dataset, batch_size=1, shuffle=True)):
     with torch.no_grad():
         outputs[i] = model(inputs)[0]
         targets_list[i] = targets[0]
