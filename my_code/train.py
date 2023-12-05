@@ -41,6 +41,8 @@ for epoch in tqdm(range(epochs)):
         loss = contrastive_loss(outputs, targets) * contrastive_loss_weight
         total_mse_loss = 0
         for output, target, flag in zip(outputs, targets, flags):
+            print(flag)
+            exit()
             if flag == "video":
                 total_mse_loss += mse_loss(output, target)
         loss += total_mse_loss
