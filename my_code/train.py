@@ -44,7 +44,6 @@ def load_saved_model():
             if f"encoders.{modality}.{encoder_key}" in saved_state_dict:
                 encoder_state_dict[encoder_key] = saved_state_dict[f"encoders.{modality}.{encoder_key}"]
                 loaded_keys.append(encoder_key)
-                param.requires_grad = False # freeze
             else:
                 not_loaded_keys.append(encoder_key)
         print(loaded_keys)
@@ -55,8 +54,8 @@ def load_saved_model():
 
 load_saved_model()
 
-loss_function = ContrastiveLoss()
-# loss_function = nn.MSELoss()
+# loss_function = ContrastiveLoss()
+loss_function = nn.MSELoss()
 
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
