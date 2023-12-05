@@ -48,7 +48,7 @@ class AllSensorsModel(nn.Module):
                 )
             for modality in self.input_sizes.keys()
         })
-        lstm_dim = 256
+        lstm_dim = sum(output_sizes.values())
         self.lstm = nn.LSTM(
             input_size=sum(output_sizes.values()),
             hidden_size=lstm_dim,
