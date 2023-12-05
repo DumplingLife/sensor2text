@@ -38,12 +38,9 @@ for epoch in tqdm(range(epochs)):
         outputs = model(inputs)
 
         loss = contrastive_loss(outputs, targets) * contrastive_loss_weight
-        video_mask = (flags == "video")
-        print(flags)
-        print(video_mask)
-        print(outputs[video_mask], targets[video_mask])
-        exit()
-        loss += mse_loss(outputs[video_mask], targets[video_mask])
+        for output, target, flag in zip(outputs, targets, flags):
+            if flag == "video":
+                loss += mse_loss(output, target)
 
         loss.backward()
         optimizer.step()
