@@ -11,7 +11,7 @@ from my_code.losses import ContrastiveLoss
 
 learning_rate = 0.0003
 batch_size = 32
-epochs = 2
+epochs = 100
 
 dataset = ConcatDataset([
     ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_2s", "video"),
