@@ -28,5 +28,9 @@ dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
 loss_function = ContrastiveLoss()
 
+total_loss = 0
+count = 0
 for i, (text_targets, video_targets, _, _) in enumerate(dataloader):
-    print(loss_function(video_targets, video_targets))
+    total_loss += loss_function(video_targets, video_targets).item()
+    count += 1
+print(total_loss / count)
