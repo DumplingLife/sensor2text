@@ -31,6 +31,6 @@ loss_function = ContrastiveLoss()
 total_loss = 0
 count = 0
 for i, (text_targets, video_targets, _, _) in enumerate(dataloader):
-    total_loss += loss_function(video_targets, video_targets).item()
+    total_loss += loss_function(text_targets, video_targets).item()
     count += 1
 print(total_loss / count)
