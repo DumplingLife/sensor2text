@@ -24,7 +24,7 @@ class ContrastiveLoss(nn.Module):
 
 dataset = ActionsenseDataset("actionsense_data/imagebind_targets_text_2s", "actionsense_data/imagebind_targets_2s", "")
 print("len(dataset):", len(dataset))
-dataloader = DataLoader(dataset, batch_size=3, shuffle=True)
+dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
 loss_function = ContrastiveLoss()
 
