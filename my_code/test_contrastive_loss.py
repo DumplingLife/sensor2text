@@ -36,4 +36,4 @@ vision_x_audio = torch.tensor([[0.8070, 0.1088, 0.0842],
                                [0.1036, 0.7884, 0.1079],
                                [0.0018, 0.0022, 0.9960]])
 
-print(f(vision_x_text), f(audio_x_text), f(vision_x_audio), f(create(32, 0.25)))
+print(f(vision_x_text), f(audio_x_text), f(vision_x_audio), f(create(32, 0.1)))
