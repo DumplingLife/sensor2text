@@ -63,7 +63,7 @@ def evaluate(dataset, output_dir):
     outputs = []
     targets_list = []
     output_paths = []
-    for i, (inputs, targets, filepath, flags) in enumerate(DataLoader(dataset, batch_size=1, shuffle=True)):
+    for inputs, targets, filepath, flags in DataLoader(dataset, batch_size=1, shuffle=True):
         if flags[0] == "video":
             with torch.no_grad():
                 outputs.append(model(inputs)[0])
@@ -88,9 +88,10 @@ def evaluate(dataset, output_dir):
     print("average pred squared error to pred mean:", squared_error_to_mean.item() / len(dataset))
     print("average target squared error to target mean:", targets_squared_error_to_mean.item() / len(dataset))
 
-    for i in range(len(dataset)):
-        np.save(f"{output_dir}/{output_paths[i]}", outputs[i])
+    for output, output_path in zip(outputs, output_paths):
+        np.save(f"{output_dir}/{output_path}", output)
 
+print("Train ====")
 evaluate(dataset, "actionsense_data/imagebind_preds_2s")
-print("=" * 50)
+print("Test ====")
 evaluate(test_dataset, "actionsense_data/imagebind_preds_2s")
