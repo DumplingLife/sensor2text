@@ -60,14 +60,15 @@ torch.save(model.state_dict(), "model.pth")
 
 # testing stuff
 def evaluate(dataset, output_dir):
-    outputs = [None] * len(dataset)
-    targets_list = [None] * len(dataset)
-    output_paths = [None] * len(dataset)
-    for i, (inputs, targets, filepath, _) in enumerate(DataLoader(dataset, batch_size=1, shuffle=True)):
-        with torch.no_grad():
-            outputs[i] = model(inputs)[0]
-            targets_list[i] = targets[0]
-            output_paths[i] = filepath[0]
+    outputs = []
+    targets_list = []
+    output_paths = []
+    for i, (inputs, targets, filepath, flags) in enumerate(DataLoader(dataset, batch_size=1, shuffle=True)):
+        if flags[0] == "video":
+            with torch.no_grad():
+                outputs.append(model(inputs)[0])
+                targets_list.append(targets[0])
+                output_paths.append(filepath[0])
 
     print(outputs[50])
     print(outputs[100])
