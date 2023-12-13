@@ -11,7 +11,7 @@ from my_code.losses import ContrastiveLoss
 
 learning_rate = 0.0003
 batch_size = 32
-epochs = 2
+epochs = 100
 
 dataset = ConcatDataset([
     ActionsenseDataset("actionsense_data/all_sensors_2s", "actionsense_data/imagebind_targets_2s", "video"),
@@ -55,6 +55,8 @@ for epoch in tqdm(range(epochs)):
         epoch_mse_loss += mse_loss_value
         num_iters += 1
     print(f"Epoch [{epoch+1}/{epochs}], Loss: {epoch_loss / num_iters}, MSE Loss: {epoch_mse_loss / num_iters}")
+
+torch.save(model.state_dict(), "model.pth")
 
 # testing stuff
 def evaluate(dataset, output_dir):
