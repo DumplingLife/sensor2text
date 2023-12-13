@@ -27,7 +27,7 @@ print("# testing data:", len(test_dataset))
 
 model = AllSensorsModel()
 
-load_saved_model(model, "my_code/best_model.pt")
+# load_saved_model(model, "my_code/best_model.pt")
 
 contrastive_loss = ContrastiveLoss()
 contrastive_loss_weight = 0.0003
