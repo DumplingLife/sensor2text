@@ -22,7 +22,7 @@ class ContrastiveLoss(nn.Module):
         loss = F.cross_entropy(similarity, labels)
         return loss
 
-dataset = ActionsenseDataset("actionsense_data/imagebind_targets_text_2s", "actionsense_data/imagebind_targets_2s")
+dataset = ActionsenseDataset("actionsense_data/imagebind_targets_text_2s", "actionsense_data/imagebind_targets_2s", None)
 print("len(dataset):", len(dataset))
 dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
