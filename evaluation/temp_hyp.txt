@@ -1,0 +1,59 @@
+get items from refrigerator / cabinets / drawers
+peel a potato
+peel a cucumber
+peel a cucumber
+peel a cucumber
+slice a cucumber
+slice a cucumber
+slice a cucumber
+slice a cucumber
+get items from refrigerator / cabinets / drawers
+peel a potato
+peel a potato
+peel a potato
+get items from refrigerator / cabinets / drawers
+slice a potato
+slice a cucumber
+slice a cucumber
+get items from refrigerator / cabinets / drawers
+get items from refrigerator / cabinets / drawers
+slice a cucumber
+slice a cucumber
+slice bread
+get items from refrigerator / cabinets / drawers
+get items from refrigerator / cabinets / drawers
+spread almond butter on a bread slice
+spread almond butter on a bread slice
+spread almond butter on a bread slice
+spread jelly on a bread slice
+spread jelly on a bread slice
+spread jelly on a bread slice
+get items from refrigerator / cabinets / drawers
+clear cutting board
+open / close a jar of almond butter
+open / close a jar of almond butter
+get items from refrigerator / cabinets / drawers
+pour water from a pitcher into a glass
+pour water from a pitcher into a glass
+pour water from a pitcher into a glass
+pour water from a pitcher into a glass
+pour water from a pitcher into a glass
+get items from refrigerator / cabinets / drawers
+clean a plate with a towel
+clean a plate with a towel
+clean a plate with a towel
+clean a plate with a towel
+clean a plate with a towel
+clean a plate with a towel
+clean a plate with a towel
+clean a plate with a towel
+clean a plate with a towel
+clean a pan with a towel
+clean a pan with a towel
+pour water from a pitcher into a glass
+get items from refrigerator / cabinets / drawers
+get items from refrigerator / cabinets / drawers
+set table : 3 each large / small plates , bowls , mugs , glasses , sets of utensils
+stack on table : 3 each large / small plates , bowls , mugs , glasses , sets of utensils
+peel a cucumber
+get items from cabinets : 3 each large / small plates , bowls , mugs , glasses , sets of utensils

@@ -1,0 +1,59 @@
+get / replace items from refrigerator / cabinets / drawers
+peel a cucumber
+peel a cucumber
+peel a cucumber
+clear cutting board
+slice a cucumber
+slice a cucumber
+slice a cucumber
+clear cutting board
+get / replace items from refrigerator / cabinets / drawers
+peel a potato
+peel a potato
+peel a potato
+clear cutting board
+slice a potato
+slice a potato
+slice a potato
+clear cutting board
+get / replace items from refrigerator / cabinets / drawers
+slice bread
+slice bread
+slice bread
+clear cutting board
+get / replace items from refrigerator / cabinets / drawers
+spread almond butter on a bread slice
+spread almond butter on a bread slice
+spread almond butter on a bread slice
+spread jelly on a bread slice
+spread jelly on a bread slice
+spread jelly on a bread slice
+clear cutting board
+open / close a jar of almond butter
+open / close a jar of almond butter
+open / close a jar of almond butter
+get / replace items from refrigerator / cabinets / drawers
+pour water from a pitcher into a glass
+pour water from a pitcher into a glass
+pour water from a pitcher into a glass
+pour water from a pitcher into a glass
+pour water from a pitcher into a glass
+get / replace items from refrigerator / cabinets / drawers
+clean a plate with a sponge
+clean a plate with a sponge
+clean a plate with a sponge
+clean a plate with a towel
+clean a plate with a towel
+clean a plate with a towel
+clean a pan with a sponge
+clean a pan with a sponge
+clean a pan with a sponge
+clean a pan with a towel
+clean a pan with a towel
+clean a pan with a towel
+get / replace items from refrigerator / cabinets / drawers
+get items from cabinets : 3 each large / small plates , bowls , mugs , glasses , sets of utensils
+set table : 3 each large / small plates , bowls , mugs , glasses , sets of utensils
+stack on table : 3 each large / small plates , bowls
+load dishwasher : 3 each large / small plates , bowls , mugs , glasses , sets of utensils
+unload dishwasher : 3 each large / small plates , bowls , mugs , glasses , sets of utensils

@@ -1,0 +1,167 @@
+[
+    {
+        "subject": "S08",
+        "start": 760,
+        "end": 767,
+        "prompt": "Describe the scene in one sentence."
+    },
+    {
+        "subject": "S08",
+        "start": 760,
+        "end": 767,
+        "prompt": "Provide a short caption for this video."
+    },
+    {
+        "subject": "S08",
+        "start": 760,
+        "end": 767,
+        "prompt": "Describe the scene in one sentence.\n###\nAssistant:\nA person is slicing a cucumber on a cutting board.\n###\nUser:\nTell me a clever joke about this situation."
+    },
+    {
+        "subject": "S08",
+        "start": 760,
+        "end": 767,
+        "prompt": "Describe the scene in one sentence.\n###\nAssistant:\nA person is slicing a cucumber on a cutting board.\n###\nUser:\nWhat are the health benefits of what's being made?"
+    },
+    {
+        "subject": "S08",
+        "start": 760,
+        "end": 767,
+        "prompt": "What is the person holding in their right hand?"
+    },
+    {
+        "subject": "S08",
+        "start": 760,
+        "end": 767,
+        "prompt": "How long is the vegetable?"
+    },
+
+    {
+        "subject": "S08",
+        "start": 930,
+        "end": 937,
+        "prompt": "Describe the scene in one sentence."
+    },
+    {
+        "subject": "S08",
+        "start": 930,
+        "end": 937,
+        "prompt": "What is the person doing?"
+    },
+    {
+        "subject": "S08",
+        "start": 930,
+        "end": 937,
+        "prompt": "What is the person doing?\n###\nAssistant:\nA person is peeling a potato.\n###\nUser:\nHow long do you think this will take?"
+    },
+
+    {
+        "subject": "S08",
+        "start": 1290,
+        "end": 1297,
+        "prompt": "Provide a short caption for this video."
+    },
+    {
+        "subject": "S08",
+        "start": 1290,
+        "end": 1297,
+        "prompt": "Describe the action taking place in this segment of the video."
+    },
+    {
+        "subject": "S08",
+        "start": 1290,
+        "end": 1297,
+        "prompt": "Describe the scene in one sentence.\n###\nAssistant:\nA person is spreading almond butter on a slice of bread.\n###\nUser:\nWhat might the person end up making with this?"
+    },
+    {
+        "subject": "S08",
+        "start": 1290,
+        "end": 1297,
+        "prompt": "Describe the scene in one sentence.\n###\nAssistant:\nA person is spreading almond butter on a slice of bread.\n###\nUser:\nDoes this look tasty?"
+    },
+
+    {
+        "subject": "S09",
+        "start": 550,
+        "end": 557,
+        "prompt": "Provide a short caption for this video."
+    },
+    {
+        "subject": "S09",
+        "start": 550,
+        "end": 557,
+        "prompt": "Describe what is happening in this scene."
+    },
+    {
+        "subject": "S09",
+        "start": 550,
+        "end": 557,
+        "prompt": "What is the person doing?"
+    },
+    {
+        "subject": "S09",
+        "start": 550,
+        "end": 557,
+        "prompt": "Describe what is happening in this scene.\n###\nAssistant:\nA person is slicing a cucumber.\n###\nUser:\nDo they seem like they're good at cooking?"
+    },
+
+
+    {
+        "subject": "S09",
+        "start": 1230,
+        "end": 1237,
+        "prompt": "Describe what is happening in this scene."
+    },
+    {
+        "subject": "S09",
+        "start": 1230,
+        "end": 1237,
+        "prompt": "What is the person doing?"
+    },
+    {
+        "subject": "S09",
+        "start": 1230,
+        "end": 1237,
+        "prompt": "Describe what is happening in this scene.\n###\nAssistant:\nA person is pouring water into a glass.\n###\nUser:\nWhat are they using the pour the water? Which hand is it in?"
+    },
+
+
+    {
+        "subject": "S09",
+        "start": 1410,
+        "end": 1417,
+        "prompt": "Describe what is happening in this scene."
+    },
+    {
+        "subject": "S09",
+        "start": 1410,
+        "end": 1417,
+        "prompt": "What is the person doing?"
+    },
+    {
+        "subject": "S09",
+        "start": 1410,
+        "end": 1417,
+        "prompt": "Describe what is happening in this scene.\n###\nAssistant:\nA person is cleaning a pan with a towel.\n###\nUser:\nDescribe the motion of the person's hands."
+    },
+
+    
+    {
+        "subject": "S09",
+        "start": 1495,
+        "end": 1502,
+        "prompt": "Describe what is happening in this scene."
+    },
+    {
+        "subject": "S09",
+        "start": 1495,
+        "end": 1502,
+        "prompt": "What is the person doing?"
+    },
+    {
+        "subject": "S09",
+        "start": 1495,
+        "end": 1502,
+        "prompt": "Describe what is happening in this scene.\n###\nAssistant:\nA person is getting items from a cabinet.\n###\nUser:\nIs the cabinet above or below the person?"
+    }
+]
