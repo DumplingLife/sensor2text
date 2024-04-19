@@ -8,7 +8,7 @@ from dataset.EncoderDataset import EncoderDataset
 
 device = torch.device("cuda")
 
-save_path = "data/sensor_embeddings_random_8_new"
+save_path = "data/sensor_embeddings_muscle"
 dataset = EncoderDataset("data/sensors", "data/imagebind_targets", "data/train_random_8.csv")
 val_dataset = EncoderDataset("data/sensors", "data/imagebind_targets", "data/val_random_8.csv")
 test_dataset = EncoderDataset("data/sensors", "data/imagebind_targets", "data/test_random_8.csv")
@@ -16,8 +16,8 @@ print("# training data:", len(dataset))
 print("# validation data:", len(val_dataset))
 print("# testing data:", len(test_dataset))
 
-model = SensorEncoder(active_sensors=[True, True, True]).to(device)
-model.load_state_dict(torch.load("model_saves/sensor_encoder/model_random_split_8.pth"))
+model = SensorEncoder(active_sensors=[False, True, False]).to(device)
+model.load_state_dict(torch.load("model_saves/sensor_encoder/muscle_only.pth"))
 
 def evaluate(dataset):
     outputs_list = []
