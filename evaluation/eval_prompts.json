@@ -163,5 +163,18 @@
         "start": 1495,
         "end": 1502,
         "prompt": "Describe what is happening in this scene.\n###\nAssistant:\nA person is getting items from a cabinet.\n###\nUser:\nIs the cabinet above or below the person?"
+    },
+
+    {
+        "subject": "S08",
+        "start": 965,
+        "end": 972,
+        "prompt": "What is happening in this scene?"
+    },
+    {
+        "subject": "S08",
+        "start": 965,
+        "end": 972,
+        "prompt": "What is happening in this scene?\n###\nAssistant:\nA person is peeling a potato.\n###\nUser:\nHow long do you think this will take?"
     }
 ]

@@ -36,9 +36,11 @@ for key in reworded_captions:
 # gets (imagebind_embeds, captions)
 # imagebind_embeds is 8 imagebind files, e.g. shape (batch_size, 8, 1024)
 class ImagebindEmbedsDataset(Dataset):
-    def __init__(self, data_dir, hdf_dir, files_csv):
+    def __init__(self, data_dir, hdf_dir, files_csv, include_filepaths=False):
         self.imagebind_embeds = []
         self.captions = []
+        self.filepaths = []
+        self.include_filepaths = include_filepaths
         
         hdf_files = {}
         data_files = {}
@@ -56,6 +58,7 @@ class ImagebindEmbedsDataset(Dataset):
             if label and all(f"{subdir}/{i:03d}.npy" in filepaths for i in range(idx, idx+8)) and idx % 8 == 0: # pick 8s
                 self.imagebind_embeds.append([f"{data_dir}/{subdir}/{i:03d}.npy" for i in range(idx, idx+8)])
                 self.captions.append(label.decode('utf-8').replace("/", " "))
+                self.filepaths.append(f"{subdir}/{idx:03d}")
 
     def __len__(self):
         return len(self.imagebind_embeds)
@@ -63,4 +66,7 @@ class ImagebindEmbedsDataset(Dataset):
     def __getitem__(self, idx):
         data = [np.load(imagebind_embed) for imagebind_embed in self.imagebind_embeds[idx]]
         caption = self.captions[idx]
-        return torch.from_numpy(np.array(data)).float(), reworded_captions[caption]
+        if self.include_filepaths:
+            return torch.from_numpy(np.array(data)).float(), reworded_captions[caption], self.filepaths[idx]
+        else:
+            return torch.from_numpy(np.array(data)).float(), reworded_captions[caption]
